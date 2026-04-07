@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Món Ăn Vị Nhà"
+version = "1.0.0"
+id = "artifacts/mon-an-vi-nha"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 21297
+
+[services.development]
+run = "pnpm --filter @workspace/mon-an-vi-nha run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/mon-an-vi-nha", "run", "build" ]
+publicDir = "artifacts/mon-an-vi-nha/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "21297"
+BASE_PATH = "/"
