@@ -1,202 +1,176 @@
-import { useState, useEffect } from "react";
-import { useLocation } from "wouter";
-import { Search, SlidersHorizontal, X } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Search, X } from "lucide-react";
 import DishCard from "@/components/DishCard";
 import { dishes, categories } from "@/data/dishes";
 
 export default function Menu() {
-  const [location] = useLocation();
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Tất cả");
-  const [selectedDifficulty, setSelectedDifficulty] = useState("Tất cả");
-  const [showFilters, setShowFilters] = useState(false);
+  const [query, setQuery] = useState("");
+  const [debouncedQuery, setDebouncedQuery] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const timerRef = useRef<ReturnType<typeof setTimeout>>();
 
-  // Read category from URL
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const cat = params.get("category");
-    if (cat && categories.includes(cat)) {
-      setSelectedCategory(cat);
-    }
-  }, [location]);
+    timerRef.current = setTimeout(() => {
+      setDebouncedQuery(query);
+    }, 300);
+    return () => clearTimeout(timerRef.current);
+  }, [query]);
 
-  const difficulties = ["Tất cả", "Dễ", "Trung bình", "Khó"];
-
-  const filtered = dishes.filter((dish) => {
+  const filtered = dishes.filter((d) => {
+    const matchCat = activeCategory === "all" || d.category === activeCategory;
+    const q = debouncedQuery.toLowerCase();
     const matchSearch =
-      dish.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dish.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      dish.tags.some((t) => t.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchCategory =
-      selectedCategory === "Tất cả" || dish.category === selectedCategory;
-    const matchDifficulty =
-      selectedDifficulty === "Tất cả" || dish.difficulty === selectedDifficulty;
-    return matchSearch && matchCategory && matchDifficulty;
+      !q ||
+      d.name.toLowerCase().includes(q) ||
+      d.description.toLowerCase().includes(q) ||
+      d.region.toLowerCase().includes(q) ||
+      d.ingredients.some((i) => i.name.toLowerCase().includes(q));
+    return matchCat && matchSearch;
   });
 
-  const clearFilters = () => {
-    setSearchQuery("");
-    setSelectedCategory("Tất cả");
-    setSelectedDifficulty("Tất cả");
-  };
-
-  const hasActiveFilters =
-    searchQuery || selectedCategory !== "Tất cả" || selectedDifficulty !== "Tất cả";
-
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      {/* Page Header */}
-      <div className="bg-primary/5 border-b border-border py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-1">
-            Khám Phá
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+    <div className="paper-texture" style={{ minHeight: "80vh" }}>
+      {/* Page header */}
+      <div className="page-hero">
+        <div className="page-container">
+          <p className="section-label">Khám Phá</p>
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
+              color: "var(--color-ink)",
+              marginBottom: "0.35rem",
+            }}
+          >
             Thực Đơn Gia Đình
           </h1>
-          <p className="text-muted-foreground mt-2 max-w-lg">
-            Tổng hợp các công thức nấu ăn gia đình truyền thống Việt Nam, từ đơn giản đến
-            cầu kỳ.
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              color: "var(--color-muted)",
+              fontSize: "0.9rem",
+            }}
+          >
+            Công thức truyền thống từ bếp nhà Việt Nam — Nam Bộ, Huế, Sài Gòn và hơn thế nữa.
           </p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Search & Filter Bar */}
-        <div className="flex flex-col sm:flex-row gap-3 mb-6">
-          {/* Search */}
-          <div className="relative flex-1">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+      <div className="page-container" style={{ paddingTop: "1.5rem", paddingBottom: "3rem" }}>
+        {/* Search + Filter */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.75rem",
+            alignItems: "flex-start",
+            marginBottom: "1.25rem",
+          }}
+        >
+          {/* Search bar */}
+          <div className="search-wrap" style={{ flex: "1 1 220px" }}>
+            <Search />
             <input
               type="search"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="Tìm kiếm món ăn, nguyên liệu..."
-              className="w-full pl-10 pr-4 py-2.5 border border-border rounded-xl bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
+              className="search-input"
+              placeholder="Tìm món ăn, nguyên liệu, vùng miền..."
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
           </div>
 
-          {/* Toggle Filter */}
-          <button
-            onClick={() => setShowFilters(!showFilters)}
-            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl border text-sm font-medium transition-all ${
-              showFilters
-                ? "bg-primary text-primary-foreground border-primary"
-                : "bg-background text-foreground border-border hover:border-primary hover:text-primary"
-            }`}
-          >
-            <SlidersHorizontal className="w-4 h-4" />
-            Bộ Lọc
-            {hasActiveFilters && (
-              <span className="w-5 h-5 bg-amber-500 text-white text-xs rounded-full flex items-center justify-center">
-                !
-              </span>
-            )}
-          </button>
-
-          {hasActiveFilters && (
+          {/* Clear */}
+          {(query || activeCategory !== "all") && (
             <button
-              onClick={clearFilters}
-              className="flex items-center gap-1.5 px-4 py-2.5 rounded-xl border border-border text-muted-foreground hover:text-destructive hover:border-destructive text-sm transition-all"
+              className="btn-ghost"
+              onClick={() => {
+                setQuery("");
+                setActiveCategory("all");
+              }}
+              style={{ display: "flex", alignItems: "center", gap: "0.3rem" }}
             >
-              <X className="w-4 h-4" />
-              Xóa lọc
+              <X size={12} /> Xóa lọc
             </button>
           )}
         </div>
 
-        {/* Filters Panel */}
-        {showFilters && (
-          <div className="bg-card border border-border rounded-2xl p-5 mb-6 space-y-4">
-            {/* Category */}
-            <div>
-              <p className="text-sm font-semibold text-foreground mb-2">Danh Mục</p>
-              <div className="flex flex-wrap gap-2">
-                {categories.map((cat) => (
-                  <button
-                    key={cat}
-                    onClick={() => setSelectedCategory(cat)}
-                    className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all ${
-                      selectedCategory === cat
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                    }`}
-                  >
-                    {cat}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Difficulty */}
-            <div>
-              <p className="text-sm font-semibold text-foreground mb-2">Độ Khó</p>
-              <div className="flex flex-wrap gap-2">
-                {difficulties.map((diff) => (
-                  <button
-                    key={diff}
-                    onClick={() => setSelectedDifficulty(diff)}
-                    className={`px-3.5 py-1.5 rounded-full text-sm font-medium transition-all ${
-                      selectedDifficulty === diff
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted text-muted-foreground hover:bg-primary/10 hover:text-primary"
-                    }`}
-                  >
-                    {diff}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Category Quick Links (always visible) */}
-        <div className="flex gap-2 overflow-x-auto pb-2 mb-6 -mx-1 px-1">
+        {/* Category filter */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "0.5rem",
+            marginBottom: "1.25rem",
+            paddingBottom: "1rem",
+            borderBottom: "1px solid var(--color-rule)",
+          }}
+        >
           {categories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setSelectedCategory(cat)}
-              className={`whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium transition-all flex-shrink-0 ${
-                selectedCategory === cat
-                  ? "bg-primary text-primary-foreground shadow-sm"
-                  : "bg-card border border-border text-muted-foreground hover:border-primary hover:text-primary"
-              }`}
+              key={cat.value}
+              className={`btn-ghost${activeCategory === cat.value ? " active" : ""}`}
+              onClick={() => setActiveCategory(cat.value)}
             >
-              {cat}
+              {cat.label}
             </button>
           ))}
         </div>
 
-        {/* Results count */}
-        <p className="text-sm text-muted-foreground mb-6">
-          {filtered.length === dishes.length
-            ? `Tất cả ${dishes.length} món ăn`
-            : `${filtered.length} món ăn được tìm thấy`}
+        {/* Result count */}
+        <p
+          style={{
+            fontFamily: "var(--font-caption)",
+            fontSize: "0.75rem",
+            color: "var(--color-muted)",
+            letterSpacing: "0.06em",
+            marginBottom: "1.25rem",
+          }}
+        >
+          Tìm thấy <strong style={{ color: "var(--color-ink)" }}>{filtered.length}</strong> món ăn
+          {debouncedQuery && ` · cho "${debouncedQuery}"`}
         </p>
 
         {/* Grid */}
         {filtered.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+              gap: "1.25rem",
+            }}
+          >
             {filtered.map((dish) => (
               <DishCard key={dish.id} dish={dish} />
             ))}
           </div>
         ) : (
-          <div className="text-center py-20">
-            <div className="text-6xl mb-4">🍽️</div>
-            <h3 className="text-xl font-semibold text-foreground mb-2">
-              Không tìm thấy món ăn
-            </h3>
-            <p className="text-muted-foreground mb-6">
-              Hãy thử tìm kiếm với từ khóa khác hoặc bỏ bộ lọc.
-            </p>
-            <button
-              onClick={clearFilters}
-              className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-medium hover:bg-primary/90 transition-colors"
+          <div
+            style={{
+              textAlign: "center",
+              padding: "4rem 1rem",
+              border: "1px dashed var(--color-rule)",
+            }}
+          >
+            <p
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.1rem",
+                color: "var(--color-muted)",
+                fontStyle: "italic",
+              }}
             >
-              <X className="w-4 h-4" />
-              Xóa bộ lọc
-            </button>
+              ❦ Không tìm thấy món phù hợp ❦
+            </p>
+            <p
+              style={{
+                fontFamily: "var(--font-caption)",
+                fontSize: "0.8rem",
+                color: "var(--color-muted)",
+                marginTop: "0.5rem",
+              }}
+            >
+              Thử từ khóa khác hoặc xóa bộ lọc
+            </p>
           </div>
         )}
       </div>

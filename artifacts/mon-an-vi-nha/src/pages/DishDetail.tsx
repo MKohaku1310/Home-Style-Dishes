@@ -1,146 +1,225 @@
-import { useRoute, Link } from "wouter";
-import { Clock, Users, ChefHat, ArrowLeft, CheckCircle2, Tag } from "lucide-react";
-import { dishes } from "@/data/dishes";
-import DishCard from "@/components/DishCard";
-
-const difficultyColor = {
-  Dễ: "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400",
-  "Trung bình": "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-amber-400",
-  Khó: "bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400",
-};
+import { useRoute, useLocation } from "wouter";
+import { ArrowLeft, Clock, Users, MapPin, ChefHat } from "lucide-react";
+import { dishes, categoryLabels } from "@/data/dishes";
 
 export default function DishDetail() {
   const [, params] = useRoute("/dish/:slug");
+  const [, navigate] = useLocation();
   const slug = params?.slug;
   const dish = dishes.find((d) => d.slug === slug);
 
   if (!dish) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center pt-20 px-4 text-center">
-        <div className="text-6xl mb-4">🍽️</div>
-        <h1 className="text-2xl font-bold text-foreground mb-2">Không tìm thấy món ăn</h1>
-        <p className="text-muted-foreground mb-6">
-          Món ăn này không tồn tại hoặc đã bị xóa.
-        </p>
-        <Link
-          href="/menu"
-          className="inline-flex items-center gap-2 bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-medium hover:bg-primary/90 transition-colors"
+      <div
+        style={{
+          minHeight: "60vh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          textAlign: "center",
+          padding: "2rem",
+        }}
+      >
+        <p
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "1.3rem",
+            fontStyle: "italic",
+            color: "var(--color-muted)",
+            marginBottom: "1rem",
+          }}
         >
-          <ArrowLeft className="w-4 h-4" />
-          Quay lại thực đơn
-        </Link>
+          ❦ Không tìm thấy món ăn này ❦
+        </p>
+        <button className="btn-primary" onClick={() => navigate("/menu")}>
+          <ArrowLeft size={13} /> Quay Lại Thực Đơn
+        </button>
       </div>
     );
   }
 
-  const relatedDishes = dishes
-    .filter((d) => d.id !== dish.id && d.category === dish.category)
-    .slice(0, 3);
-
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      {/* Hero Image */}
-      <div className="relative h-72 sm:h-96 lg:h-[480px] overflow-hidden">
+    <div className="paper-texture" style={{ minHeight: "80vh" }}>
+      {/* Hero image full-width */}
+      <div style={{ position: "relative", maxHeight: "420px", overflow: "hidden" }}>
         <img
           src={dish.image}
           alt={dish.name}
-          className="w-full h-full object-cover"
+          style={{
+            width: "100%",
+            height: "420px",
+            objectFit: "cover",
+            display: "block",
+            filter: "sepia(35%) contrast(1.05) brightness(0.92)",
+          }}
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
-
-        {/* Back Button */}
-        <div className="absolute top-4 left-4 sm:left-8">
-          <Link
-            href="/menu"
-            className="inline-flex items-center gap-2 bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white px-4 py-2 rounded-xl text-sm font-medium transition-all"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            Thực đơn
-          </Link>
-        </div>
-
-        {/* Title overlay */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
-          <div className="max-w-4xl mx-auto">
-            <div className="flex flex-wrap gap-2 mb-3">
-              <span className="bg-background/90 backdrop-blur-sm text-foreground text-xs font-medium px-3 py-1 rounded-full border border-border">
-                {dish.category}
-              </span>
-              <span
-                className={`text-xs font-medium px-3 py-1 rounded-full ${difficultyColor[dish.difficulty]}`}
-              >
-                {dish.difficulty}
-              </span>
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">{dish.name}</h1>
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            background:
+              "linear-gradient(to bottom, transparent 30%, rgba(26,18,8,0.65) 100%)",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "1.5rem",
+            left: "1.25rem",
+            right: "1.25rem",
+          }}
+        >
+          <div className="page-container">
+            <button
+              onClick={() => navigate("/menu")}
+              style={{
+                fontFamily: "var(--font-caption)",
+                fontSize: "0.72rem",
+                color: "rgba(245,234,208,0.85)",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.3rem",
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                marginBottom: "0.6rem",
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}
+            >
+              <ArrowLeft size={12} /> Thực Đơn
+            </button>
+            <span className="category-badge" style={{ marginBottom: "0.4rem", display: "inline-block", color: "var(--color-gold-light)", borderColor: "var(--color-gold-light)" }}>
+              {categoryLabels[dish.category]}
+            </span>
+            <h1
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "clamp(1.8rem, 5vw, 3rem)",
+                color: "var(--color-paper)",
+                fontWeight: 900,
+                lineHeight: 1.1,
+              }}
+            >
+              {dish.name}
+            </h1>
           </div>
         </div>
       </div>
 
       {/* Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Meta Info */}
-        <div className="grid grid-cols-3 gap-4 mb-8 p-4 bg-card border border-border rounded-2xl">
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5 text-primary mb-1">
-              <Clock className="w-4 h-4" />
-            </div>
-            <div className="text-lg font-bold text-foreground">
-              {dish.prepTime + dish.cookTime} phút
-            </div>
-            <div className="text-xs text-muted-foreground">Tổng thời gian</div>
-          </div>
-          <div className="text-center border-x border-border">
-            <div className="flex items-center justify-center gap-1.5 text-primary mb-1">
-              <Users className="w-4 h-4" />
-            </div>
-            <div className="text-lg font-bold text-foreground">{dish.servings} người</div>
-            <div className="text-xs text-muted-foreground">Khẩu phần</div>
-          </div>
-          <div className="text-center">
-            <div className="flex items-center justify-center gap-1.5 text-primary mb-1">
-              <ChefHat className="w-4 h-4" />
-            </div>
-            <div className="text-lg font-bold text-foreground">{dish.ingredients.length}</div>
-            <div className="text-xs text-muted-foreground">Nguyên liệu</div>
-          </div>
-        </div>
-
-        {/* Time breakdown */}
-        <div className="flex gap-3 mb-8 text-sm">
-          <div className="bg-muted/50 rounded-xl px-4 py-2.5">
-            <span className="text-muted-foreground">Sơ chế: </span>
-            <span className="font-semibold text-foreground">{dish.prepTime} phút</span>
-          </div>
-          <div className="bg-muted/50 rounded-xl px-4 py-2.5">
-            <span className="text-muted-foreground">Nấu: </span>
-            <span className="font-semibold text-foreground">{dish.cookTime} phút</span>
-          </div>
+      <div className="page-container" style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+        {/* Meta bar */}
+        <div
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            gap: "1.5rem",
+            padding: "1rem 0",
+            borderTop: "3px solid var(--color-ink)",
+            borderBottom: "1px solid var(--color-rule)",
+            marginBottom: "2rem",
+            fontFamily: "var(--font-caption)",
+            fontSize: "0.78rem",
+            color: "var(--color-muted)",
+          }}
+        >
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <MapPin size={13} color="var(--color-red)" /> {dish.region}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <Clock size={13} color="var(--color-red)" /> Sơ chế: {dish.prepTime}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <Clock size={13} color="var(--color-gold)" /> Nấu: {dish.cookTime}
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <Users size={13} color="var(--color-red)" /> {dish.servings} người
+          </span>
+          <span style={{ display: "flex", alignItems: "center", gap: "0.4rem" }}>
+            <ChefHat size={13} color="var(--color-red)" />
+            <span
+              style={{
+                color:
+                  dish.difficulty === "Dễ"
+                    ? "var(--color-green)"
+                    : dish.difficulty === "Trung bình"
+                    ? "var(--color-gold)"
+                    : "var(--color-red)",
+                fontWeight: 600,
+              }}
+            >
+              {dish.difficulty}
+            </span>
+          </span>
         </div>
 
         {/* Description */}
-        <div className="mb-10">
-          <h2 className="text-xl font-bold text-foreground mb-3">Giới Thiệu</h2>
-          <p className="text-muted-foreground leading-relaxed text-base">{dish.description}</p>
-        </div>
+        <p
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "1.05rem",
+            lineHeight: 1.85,
+            color: "var(--color-ink-light)",
+            marginBottom: "2.5rem",
+            maxWidth: "760px",
+          }}
+        >
+          {dish.description}
+        </p>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-10">
+        {/* Two-column: Ingredients | Steps */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.7fr",
+            gap: "2.5rem",
+            marginBottom: "2.5rem",
+          }}
+          className="detail-grid"
+        >
           {/* Ingredients */}
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                🥬
-              </span>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.1rem",
+                color: "var(--color-ink)",
+                borderBottom: "2px solid var(--color-ink)",
+                paddingBottom: "0.4rem",
+                marginBottom: "1rem",
+                letterSpacing: "0.02em",
+              }}
+            >
               Nguyên Liệu
             </h2>
-            <ul className="space-y-2">
-              {dish.ingredients.map((ingredient, idx) => (
+            <ul style={{ listStyle: "none" }}>
+              {dish.ingredients.map((ing, i) => (
                 <li
-                  key={idx}
-                  className="flex items-start gap-3 p-3 bg-card border border-border rounded-xl hover:border-primary/40 transition-colors"
+                  key={i}
+                  style={{
+                    display: "flex",
+                    gap: "0.75rem",
+                    alignItems: "baseline",
+                    borderBottom: "1px dotted var(--color-rule)",
+                    padding: "0.45rem 0",
+                    fontFamily: "var(--font-body)",
+                    fontSize: "0.88rem",
+                  }}
                 >
-                  <CheckCircle2 className="w-4 h-4 text-primary mt-0.5 flex-shrink-0" />
-                  <span className="text-foreground text-sm">{ingredient}</span>
+                  <span
+                    style={{
+                      fontFamily: "var(--font-caption)",
+                      fontWeight: 600,
+                      color: "var(--color-red)",
+                      minWidth: "70px",
+                      fontSize: "0.82rem",
+                    }}
+                  >
+                    {ing.amount}
+                  </span>
+                  <span style={{ color: "var(--color-ink-light)" }}>{ing.name}</span>
                 </li>
               ))}
             </ul>
@@ -148,56 +227,63 @@ export default function DishDetail() {
 
           {/* Steps */}
           <div>
-            <h2 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
-              <span className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center text-primary">
-                👨‍🍳
-              </span>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.1rem",
+                color: "var(--color-ink)",
+                borderBottom: "2px solid var(--color-ink)",
+                paddingBottom: "0.4rem",
+                marginBottom: "1rem",
+              }}
+            >
               Cách Nấu
             </h2>
-            <ol className="space-y-3">
-              {dish.steps.map((step, idx) => (
-                <li key={idx} className="flex gap-3">
-                  <span className="flex-shrink-0 w-7 h-7 bg-primary text-primary-foreground rounded-full text-xs font-bold flex items-center justify-center mt-0.5">
-                    {idx + 1}
-                  </span>
-                  <p className="text-foreground text-sm leading-relaxed pt-0.5">{step}</p>
-                </li>
-              ))}
-            </ol>
+            {dish.steps.map((s) => (
+              <div key={s.step} className="recipe-step">
+                <span className="recipe-step__num">{s.step}.</span>
+                <div>
+                  <p className="recipe-step__title">Bước {s.step}: {s.title}</p>
+                  <p className="recipe-step__text">{s.instruction}</p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
 
-        {/* Tags */}
-        {dish.tags.length > 0 && (
-          <div className="mb-10">
-            <div className="flex items-center gap-2 flex-wrap">
-              <Tag className="w-4 h-4 text-muted-foreground" />
-              {dish.tags.map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-muted text-muted-foreground text-xs px-3 py-1.5 rounded-full hover:bg-primary/10 hover:text-primary transition-colors cursor-default"
-                >
-                  #{tag}
-                </span>
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Story */}
+        <div className="ornament-divider">❦ Câu Chuyện Món Ăn ❦</div>
+        <blockquote
+          style={{
+            fontFamily: "var(--font-body)",
+            fontStyle: "italic",
+            fontSize: "1rem",
+            lineHeight: 1.9,
+            color: "var(--color-ink-light)",
+            borderLeft: "3px solid var(--color-gold-light)",
+            paddingLeft: "1.25rem",
+            maxWidth: "680px",
+            margin: "0 auto 3rem",
+          }}
+        >
+          {dish.story}
+        </blockquote>
 
-        {/* Related */}
-        {relatedDishes.length > 0 && (
-          <div>
-            <h2 className="text-xl font-bold text-foreground mb-5">
-              Món Cùng Danh Mục
-            </h2>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-              {relatedDishes.map((d) => (
-                <DishCard key={d.id} dish={d} />
-              ))}
-            </div>
-          </div>
-        )}
+        {/* Back */}
+        <div style={{ borderTop: "1px solid var(--color-rule)", paddingTop: "1.5rem" }}>
+          <button className="btn-outline" onClick={() => navigate("/menu")}>
+            <ArrowLeft size={13} /> Quay Lại Thực Đơn
+          </button>
+        </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .detail-grid {
+            grid-template-columns: 1fr !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

@@ -1,197 +1,220 @@
-import { Link } from "wouter";
-import { Heart, BookOpen, Users, Leaf, ArrowRight } from "lucide-react";
-
-const values = [
-  {
-    icon: <Heart className="w-6 h-6" />,
-    title: "Yêu Thương Từ Bếp",
-    description:
-      "Mỗi bữa cơm là cơ hội để bày tỏ tình yêu thương với gia đình. Chúng tôi tin rằng nấu ăn không chỉ là công việc — đó là ngôn ngữ của tình thương.",
-  },
-  {
-    icon: <BookOpen className="w-6 h-6" />,
-    title: "Lưu Giữ Truyền Thống",
-    description:
-      "Những công thức được truyền từ đời này sang đời khác là kho báu văn hóa. Chúng tôi cam kết ghi chép và bảo tồn hương vị ẩm thực Việt Nam.",
-  },
-  {
-    icon: <Users className="w-6 h-6" />,
-    title: "Dành Cho Mọi Người",
-    description:
-      "Dù bạn là người mới học nấu hay đầu bếp có kinh nghiệm, chúng tôi đều có công thức phù hợp. Hướng dẫn rõ ràng, dễ hiểu, dễ làm.",
-  },
-  {
-    icon: <Leaf className="w-6 h-6" />,
-    title: "Nguyên Liệu Tươi Sạch",
-    description:
-      "Chúng tôi khuyến khích sử dụng nguyên liệu tươi, sạch, có nguồn gốc rõ ràng. Bữa ăn ngon nhất là bữa ăn tốt cho sức khỏe của cả gia đình.",
-  },
-];
-
-const team = [
-  {
-    name: "Nguyễn Thị Hoa",
-    role: "Đầu Bếp Chính",
-    bio: "20 năm kinh nghiệm nấu ăn gia đình và nhà hàng. Đặc biệt yêu thích các món ăn miền Nam.",
-    avatar: "https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=200&q=80",
-  },
-  {
-    name: "Trần Văn Nam",
-    role: "Chuyên Gia Ẩm Thực",
-    bio: "Nghiên cứu ẩm thực truyền thống Việt Nam. Đã xuất bản 2 cuốn sách dạy nấu ăn.",
-    avatar: "https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?w=200&q=80",
-  },
-  {
-    name: "Lê Thị Mai",
-    role: "Biên Soạn Công Thức",
-    bio: "Đam mê ẩm thực và viết lách. Chuyên sưu tầm các công thức từ các vùng miền Việt Nam.",
-    avatar: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=200&q=80",
-  },
-];
-
 export default function About() {
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      {/* Hero */}
-      <div
-        className="relative py-24 overflow-hidden"
-        style={{
-          backgroundImage:
-            "url('https://images.unsplash.com/photo-1466637574441-749b8f19452f?w=1400&q=80')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/60" />
-        <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-white mb-4">
-            Về Chúng Tôi
+    <div className="paper-texture" style={{ minHeight: "80vh" }}>
+      <div className="page-hero">
+        <div className="page-container">
+          <p className="section-label">Về Chúng Tôi</p>
+          <h1
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(2rem, 5vw, 3.2rem)",
+              color: "var(--color-ink)",
+              marginBottom: "0.25rem",
+            }}
+          >
+            Hương Vị Bếp Nhà
           </h1>
-          <p className="text-xl text-white/80 max-w-2xl mx-auto">
-            Vị Nhà ra đời từ tình yêu với ẩm thực gia đình và khát vọng gìn giữ
-            những hương vị Việt Nam truyền thống
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontStyle: "italic",
+              color: "var(--color-muted)",
+              fontSize: "0.95rem",
+            }}
+          >
+            Câu chuyện về những công thức nấu ăn được truyền từ đời này sang đời khác
           </p>
         </div>
       </div>
 
-      {/* Story */}
-      <section className="py-16">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
-                Câu Chuyện Của Chúng Tôi
-              </p>
-              <h2 className="text-3xl font-bold text-foreground mb-6">
-                Hương Vị Quê Nhà Trong Từng Món Ăn
-              </h2>
-              <div className="space-y-4 text-muted-foreground leading-relaxed">
-                <p>
-                  Vị Nhà được thành lập năm 2023 với một sứ mệnh đơn giản: lưu giữ và
-                  chia sẻ những công thức nấu ăn gia đình truyền thống của người Việt.
-                </p>
-                <p>
-                  Trong thời đại bận rộn ngày nay, nhiều gia đình không còn nhiều thời
-                  gian nấu ăn. Nhưng chúng tôi tin rằng bữa cơm gia đình vẫn là điều
-                  thiêng liêng và quan trọng nhất — không gian để mọi người quây quần,
-                  chia sẻ và yêu thương nhau.
-                </p>
-                <p>
-                  Từ những món canh mẹ nấu, nồi cơm ấm nghi ngút khói, đến những món
-                  kho đặc trưng ngày Tết — tất cả đều được chúng tôi ghi chép tỉ mỉ
-                  để bạn có thể tái hiện ngay tại bếp nhà mình.
-                </p>
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?w=600&q=80"
-                alt="Bếp nhà Việt Nam"
-                className="rounded-2xl w-full object-cover aspect-square shadow-xl"
-              />
-              <div className="absolute -bottom-4 -right-4 bg-primary text-primary-foreground rounded-2xl p-4 shadow-lg">
-                <div className="text-2xl font-bold">2023</div>
-                <div className="text-sm opacity-90">Thành lập</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <div className="page-container" style={{ paddingTop: "2.5rem", paddingBottom: "3rem" }}>
+        {/* Headline */}
+        <h2
+          style={{
+            fontFamily: "var(--font-display)",
+            fontSize: "clamp(1.4rem, 3vw, 2rem)",
+            color: "var(--color-ink)",
+            textAlign: "center",
+            marginBottom: "0.5rem",
+          }}
+        >
+          Tại Sao Lại Là "Vị Nhà"?
+        </h2>
+        <p
+          style={{
+            textAlign: "center",
+            fontFamily: "var(--font-caption)",
+            fontStyle: "italic",
+            color: "var(--color-muted)",
+            fontSize: "0.82rem",
+            marginBottom: "2rem",
+          }}
+        >
+          — Bởi vì không nơi nào ngon hơn bếp nhà mình —
+        </p>
 
-      {/* Values */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
-              Giá Trị Cốt Lõi
-            </p>
-            <h2 className="text-3xl font-bold text-foreground">
-              Điều Chúng Tôi Tin Tưởng
-            </h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {values.map((value) => (
-              <div
-                key={value.title}
-                className="bg-card border border-border rounded-2xl p-6 hover:border-primary/40 hover:-translate-y-1 transition-all duration-200"
-              >
-                <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center text-primary mb-4">
-                  {value.icon}
-                </div>
-                <h3 className="text-foreground font-semibold mb-2">{value.title}</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">
-                  {value.description}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Team */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-2">
-              Đội Ngũ
-            </p>
-            <h2 className="text-3xl font-bold text-foreground">Những Người Đằng Sau Bếp</h2>
-          </div>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8">
-            {team.map((member) => (
-              <div key={member.name} className="text-center">
-                <img
-                  src={member.avatar}
-                  alt={member.name}
-                  className="w-24 h-24 rounded-full object-cover mx-auto mb-4 border-4 border-border shadow-md"
-                />
-                <h3 className="text-foreground font-bold text-lg">{member.name}</h3>
-                <p className="text-primary text-sm font-medium mb-2">{member.role}</p>
-                <p className="text-muted-foreground text-sm leading-relaxed">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA */}
-      <section className="py-12">
-        <div className="max-w-2xl mx-auto px-4 text-center">
-          <h2 className="text-2xl font-bold text-foreground mb-4">
-            Sẵn Sàng Vào Bếp Chưa?
-          </h2>
-          <p className="text-muted-foreground mb-6">
-            Khám phá hàng chục công thức nấu ăn truyền thống đang chờ bạn.
+        {/* Two-column article body with drop cap */}
+        <div
+          className="drop-cap newspaper-columns"
+          style={{
+            fontFamily: "var(--font-body)",
+            fontSize: "0.97rem",
+            lineHeight: 1.85,
+            color: "var(--color-ink-light)",
+            marginBottom: "2.5rem",
+          }}
+        >
+          <p style={{ marginBottom: "1rem" }}>
+            Món Ăn Vị Nhà ra đời từ một buổi chiều mưa, khi người sáng lập ngồi nhớ lại
+            mâm cơm mẹ nấu — nồi canh chua bốc khói, chén cơm trắng thơm và tiếng muỗng
+            đũa lách cách. Không có nhà hàng nào có thể tái hiện được cái hương vị đó. Chỉ
+            có ký ức và đôi tay quen thuộc mới làm được.
           </p>
-          <Link
-            href="/menu"
-            className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105"
-          >
-            Xem Thực Đơn
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+          <p style={{ marginBottom: "1rem" }}>
+            Đó là lý do chúng tôi tạo ra trang web này — không phải để dạy bạn nấu
+            ăn theo kiểu chuyên nghiệp, mà để giúp bạn nhớ lại, học lại, và tái hiện
+            những hương vị bếp nhà mà đôi khi chúng ta bỗng nhận ra mình đã đánh mất từ
+            lúc nào không hay.
+          </p>
+          <p style={{ marginBottom: "1rem" }}>
+            Mỗi công thức ở đây đều mang theo một câu chuyện — câu chuyện về người nấu,
+            về ký ức bữa cơm, về vùng đất nơi món ăn được sinh ra. Chúng tôi tin rằng ẩm
+            thực không chỉ là dinh dưỡng — đó là ngôn ngữ của tình thương, là sợi dây gắn
+            kết con người với nhau qua từng thế hệ.
+          </p>
+          <p>
+            Dù bạn là người lần đầu cầm muỗng hay đã có hàng chục năm kinh nghiệm bên bếp lửa,
+            chúng tôi hy vọng mỗi công thức ở đây sẽ đưa bạn trở về một góc bếp ấm áp nào đó
+            trong ký ức — nơi mùi thức ăn còn quyện với tiếng cười nói của gia đình.
+          </p>
         </div>
-      </section>
+
+        <div className="ornament-divider">◆ Sứ Mệnh ◆</div>
+
+        {/* Mission cards */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "1.25rem",
+            marginBottom: "3rem",
+          }}
+        >
+          {[
+            {
+              icon: "📖",
+              title: "Lưu Giữ Công Thức",
+              body: "Ghi chép tỉ mỉ những công thức nấu ăn gia đình truyền thống trước khi chúng bị lãng quên theo thời gian.",
+            },
+            {
+              icon: "🍲",
+              title: "Dành Cho Mọi Người",
+              body: "Từ người mới học nấu đến người muốn tái hiện hương vị tuổi thơ — công thức rõ ràng, dễ làm theo.",
+            },
+            {
+              icon: "❤️",
+              title: "Ẩm Thực Là Tình Thương",
+              body: "Chúng tôi tin mỗi bữa cơm nấu từ trái tim đều mang theo một phần linh hồn của người nấu.",
+            },
+            {
+              icon: "🌿",
+              title: "Nguyên Liệu Sạch",
+              body: "Ưu tiên nguyên liệu tươi, sạch, dễ tìm để bạn có thể nấu bất cứ lúc nào.",
+            },
+          ].map((item) => (
+            <div
+              key={item.title}
+              style={{
+                background: "var(--color-card-bg)",
+                border: "1px solid var(--color-gold-light)",
+                padding: "1.25rem",
+                borderRadius: "var(--radius-xs)",
+              }}
+            >
+              <div style={{ fontSize: "1.8rem", marginBottom: "0.6rem" }}>{item.icon}</div>
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "0.95rem",
+                  color: "var(--color-ink)",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                {item.title}
+              </h3>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--color-muted)", lineHeight: 1.7 }}>
+                {item.body}
+              </p>
+            </div>
+          ))}
+        </div>
+
+        {/* Team */}
+        <div className="ornament-divider">◆ Đội Ngũ ◆</div>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "1.5rem",
+            marginBottom: "2rem",
+          }}
+        >
+          {[
+            {
+              name: "Nguyễn Thị Hoa",
+              role: "Đầu Bếp Chính",
+              bio: "20 năm kinh nghiệm nấu ăn gia đình miền Nam. Người đã ghi chép lại hầu hết các công thức trên website này.",
+              avatar: "https://images.unsplash.com/photo-1607631568010-a87245c0daf8?w=150&q=80",
+            },
+            {
+              name: "Trần Văn Nam",
+              role: "Chuyên Gia Ẩm Thực",
+              bio: "Nghiên cứu ẩm thực truyền thống Việt Nam ba miền. Tác giả của hai cuốn sách về văn hoá ẩm thực.",
+              avatar: "https://images.unsplash.com/photo-1622021142947-da7dedc7c39a?w=150&q=80",
+            },
+            {
+              name: "Lê Thị Mai",
+              role: "Biên Soạn Nội Dung",
+              bio: "Đam mê viết và ẩm thực. Chuyên sưu tầm các công thức từ khắp ba miền Bắc Trung Nam.",
+              avatar: "https://images.unsplash.com/photo-1594744803329-e58b31de8bf5?w=150&q=80",
+            },
+          ].map((m) => (
+            <div key={m.name} style={{ textAlign: "center" }}>
+              <img
+                src={m.avatar}
+                alt={m.name}
+                style={{
+                  width: "80px",
+                  height: "80px",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  margin: "0 auto 0.75rem",
+                  filter: "sepia(20%)",
+                  border: "2px solid var(--color-gold-light)",
+                }}
+              />
+              <h4 style={{ fontFamily: "var(--font-display)", fontSize: "1rem", color: "var(--color-ink)" }}>
+                {m.name}
+              </h4>
+              <p
+                style={{
+                  fontFamily: "var(--font-caption)",
+                  fontSize: "0.72rem",
+                  color: "var(--color-red)",
+                  letterSpacing: "0.08em",
+                  textTransform: "uppercase",
+                  marginBottom: "0.4rem",
+                }}
+              >
+                {m.role}
+              </p>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "0.82rem", color: "var(--color-muted)", lineHeight: 1.65 }}>
+                {m.bio}
+              </p>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

@@ -1,0 +1,167 @@
+You are a Senior Frontend Developer. Build a complete static website called "Món Ăn Vị Nhà" (Vietnamese home-style cooking). Output every file in full — no placeholders, no "add your code here", no truncation.
+
+1. TECH STACK
+
+ReactJS 18, functional components only, hooks where needed
+React Router v6 (createBrowserRouter hoặc <Routes>)
+CSS thuần (không dùng Tailwind), viết trong index.css + module CSS riêng cho từng page nếu cần
+Không có backend, không có API call
+Mock data viết trong src/data/dishes.js dạng array of objects, export default
+
+
+2. VISUAL IDENTITY — BÁO CŨ SÀI GÒN
+Toàn bộ giao diện phải trông như tờ báo in Sài Gòn thập niên 1960–1970. Cụ thể:
+
+Màu sắc: nền giấy kem #f5ead0, mực in nâu đậm #1a1208, đỏ đất #8b2500, vàng gold #b8860b, xanh rêu #4a6741
+Typography: Google Fonts — Playfair Display (heading, masthead, tên món), Lora (body text, mô tả), Source Serif 4 (caption, nhãn nhỏ). Tuyệt đối không dùng sans-serif trừ button/input
+Layout trang chủ: chia cột kiểu newspaper — 1 featured article lớn bên trái chiếm 60%, sidebar danh sách bên phải 40%. Có đường kẻ dọc chia cột border-right: 2px solid #c9a96e
+Header/Masthead: tên trang căn giữa, font size lớn (tối thiểu 3.5rem), phía trên có dòng chữ nhỏ ghi ngày tháng + slogan kiểu "Số ra ngày..." — phía dưới masthead có 3 đường kẻ ngang (1px, 3px, 1px) màu #c9a96e
+Card món ăn: border 1px solid #c9a96e, không có border-radius (hoặc rất nhỏ 2px), ảnh trắng đen với CSS filter sepia(40%) contrast(1.1), hover thì ảnh trở về màu gốc với transition 0.4s
+Divider giữa các section: dùng ornamental divider bằng CSS hoặc Unicode (❦, ◆, —◆—) thay vì <hr> thông thường
+Paper texture: dùng CSS background-image với SVG noise filter nhẹ để tạo cảm giác giấy in
+Dark mode: nền #1a1208, chữ #f0e8d0, accent vẫn là đỏ đất và gold — trông như đọc báo dưới đèn vàng ban đêm
+
+
+3. CẤU TRÚC THƯ MỤC
+mon-an-vi-nha/
+├── public/
+│   └── index.html
+├── src/
+│   ├── data/
+│   │   └── dishes.js          ← mock data
+│   ├── components/
+│   │   ├── Navbar.jsx         ← masthead + navigation
+│   │   ├── Footer.jsx
+│   │   ├── DishCard.jsx       ← card hiển thị 1 món
+│   │   ├── SearchBar.jsx
+│   │   └── FilterBar.jsx
+│   ├── pages/
+│   │   ├── Home.jsx
+│   │   ├── Menu.jsx
+│   │   ├── DishDetail.jsx
+│   │   ├── About.jsx
+│   │   └── Contact.jsx
+│   ├── hooks/
+│   │   └── useDarkMode.js     ← custom hook toggle dark mode
+│   ├── App.jsx
+│   ├── index.css              ← global styles, CSS variables, typography
+│   └── index.js
+├── package.json
+└── README.md
+
+4. MOCK DATA — src/data/dishes.js
+Mỗi object có đúng các field sau, viết đủ 8 món:
+js{
+  id: 1,
+  name: "Canh Chua Cá Lóc",
+  slug: "canh-chua-ca-loc",
+  category: "canh",           // canh | kho | xao | luoc | com | bun
+  region: "Nam Bộ",
+  description: "...",         // 2-3 câu, giọng văn ấm áp hoài niệm
+  image: "https://placehold.co/600x400/e8d5b0/1a1208?text=Canh+Chua+Cá+Lóc",
+  prepTime: "20 phút",
+  cookTime: "30 phút",
+  servings: 4,
+  difficulty: "Dễ",           // Dễ | Trung bình | Khó
+  ingredients: [
+    { amount: "500g", name: "cá lóc, làm sạch" },
+    ...
+  ],
+  steps: [
+    { step: 1, title: "Sơ chế cá", instruction: "..." },
+    ...
+  ],
+  story: "..."                // 1 đoạn ngắn về ký ức/câu chuyện món ăn này
+}
+8 món bắt buộc: Canh Chua Cá Lóc, Thịt Kho Trứng, Cá Kho Tộ, Rau Muống Xào Tỏi, Canh Khổ Qua Nhồi Thịt, Cơm Tấm Sườn Bì, Bún Bò Huế, Bánh Canh Cua.
+
+5. TỪNG TRANG — YÊU CẦU CHI TIẾT
+Home.jsx
+
+Masthead lớn căn giữa với tên "Món Ăn Vị Nhà", tagline nhỏ phía dưới
+Layout 2 cột kiểu front page: featured dish (ảnh lớn + tên + excerpt) | danh sách 4 món khác dạng text-only list kiểu báo
+Section "Hôm nay nấu gì?" gồm 3 card ngẫu nhiên
+Divider ornamental giữa các section
+
+Menu.jsx
+
+SearchBar: input tìm theo tên, debounce 300ms với useEffect
+FilterBar: các nút filter theo category, active state rõ ràng
+Grid 3 cột desktop, 2 cột tablet, 1 cột mobile
+Hiện số lượng kết quả: "Tìm thấy X món"
+Nếu không có kết quả: hiển thị thông báo kiểu báo "Không tìm thấy món phù hợp"
+
+DishDetail.jsx
+
+Lấy slug từ URL param, tìm trong mock data
+Layout 2 cột: ảnh lớn + thông tin cơ bản bên trái | nguyên liệu + cách nấu bên phải
+Steps nấu ăn đánh số kiểu "Bước 1.", "Bước 2." với đường kẻ ngang phân cách
+Phần "Câu chuyện món ăn" cuối trang dùng font-style: italic
+Nút "← Quay lại thực đơn" dùng useNavigate
+
+About.jsx
+
+Viết như một bài báo thực thụ: có headline lớn, có drop cap ở đoạn đầu (CSS ::first-letter)
+Chia 2 cột văn bản kiểu column-count: 2 trên desktop
+
+Contact.jsx
+
+Form gồm: Họ tên, Email, Chủ đề, Nội dung
+Dùng useState quản lý form, validate đơn giản (không được để trống)
+Submit thì hiện thông báo thành công, không cần gửi thực
+Layout 2 cột: form bên trái, thông tin liên hệ bên phải
+
+
+6. COMPONENTS
+Navbar.jsx
+
+Gồm masthead (tên site) ở trên và navigation links ở dưới
+Navigation: Trang Chủ · Thực Đơn · Giới Thiệu · Liên Hệ
+Nút dark mode toggle ở góc phải (icon mặt trời/mặt trăng)
+Mobile: hamburger menu, sidebar trượt ra từ trái
+Active link có underline màu đỏ đất
+
+DishCard.jsx
+
+Props: { dish, size } — size có thể là "normal" hoặc "featured"
+Ảnh có filter sepia, hover trả về màu gốc
+Hiển thị: tên, category badge, thời gian nấu, độ khó
+Click navigate tới /dish/:slug
+
+useDarkMode.js
+
+Toggle class dark lên document.body
+Lưu preference vào localStorage
+Return [isDark, toggleDark]
+
+
+7. CSS GLOBAL — index.css
+Viết đầy đủ:
+
+CSS custom properties (variables) cho cả light và dark mode dùng .dark class
+Reset cơ bản
+Typography scale: h1→h4, p, caption
+Utility classes: .ornament-divider, .paper-texture, .sepia-image
+Responsive breakpoints: mobile < 768px, tablet 768–1024px, desktop > 1024px
+Transition mặc định cho dark mode: transition: background 0.3s, color 0.3s
+
+
+8. OUTPUT FORMAT
+Xuất từng file theo thứ tự sau, mỗi file có header rõ ràng:
+=== src/data/dishes.js ===
+(full code)
+
+=== src/index.css ===
+(full code)
+
+=== src/hooks/useDarkMode.js ===
+(full code)
+
+=== src/components/Navbar.jsx ===
+...
+Không được viết "// ... rest of code", "// add more here", hay bất kỳ dạng truncation nào. Mỗi file phải chạy được ngay sau khi copy paste.
+Cuối cùng viết README.md với hướng dẫn:
+bashnpx create-react-app mon-an-vi-nha
+cd mon-an-vi-nha
+npm install react-router-dom
+npm start

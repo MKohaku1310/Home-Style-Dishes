@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "wouter";
-import { Menu, X, Sun, Moon, ChefHat } from "lucide-react";
+import { Sun, Moon, Menu, X } from "lucide-react";
 import { useTheme } from "@/hooks/useTheme";
 
 const navLinks = [
@@ -12,101 +12,93 @@ const navLinks = [
 
 export default function Navbar() {
   const [location] = useLocation();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const { isDark, toggleDark } = useTheme();
   const [scrolled, setScrolled] = useState(false);
-  const { theme, toggleTheme } = useTheme();
+  const [mobileOpen, setMobileOpen] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 10);
+    window.addEventListener("scroll", onScroll);
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  const today = new Date().toLocaleDateString("vi-VN", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  });
+
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-background/95 backdrop-blur-md shadow-md border-b border-border"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Logo */}
-          <Link href="/" className="flex items-center gap-2 group">
-            <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center group-hover:scale-110 transition-transform">
-              <ChefHat className="w-5 h-5 text-primary-foreground" />
-            </div>
-            <div className="leading-tight">
-              <span className="text-lg font-bold text-foreground block">Vị Nhà</span>
-            </div>
+    <header className={`site-header paper-texture${scrolled ? " scrolled" : ""}`}>
+      {/* Masthead */}
+      <div className="masthead-wrapper">
+        <div className="page-container" style={{ position: "relative" }}>
+          {/* Dark toggle — top right */}
+          <button
+            onClick={toggleDark}
+            className="dark-toggle"
+            aria-label="Chuyển chế độ"
+            style={{ position: "absolute", top: "0.5rem", right: 0 }}
+          >
+            {isDark ? <Sun size={14} /> : <Moon size={14} />}
+          </button>
+
+          {/* Mobile hamburger — top left */}
+          <button
+            className="hamburger"
+            onClick={() => setMobileOpen((v) => !v)}
+            aria-label="Menu"
+            style={{ position: "absolute", top: "0.5rem", left: 0 }}
+          >
+            {mobileOpen ? <X size={20} color="var(--color-ink)" /> : <Menu size={20} color="var(--color-ink)" />}
+          </button>
+
+          <p className="masthead-dateline">{today} · Ẩm Thực Gia Đình Việt Nam</p>
+
+          <Link href="/">
+            <h1 className="masthead-title" style={{ cursor: "pointer" }}>
+              Món Ăn Vị Nhà
+            </h1>
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
-                  location === link.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-            <button
-              onClick={toggleTheme}
-              className="ml-2 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-          </div>
+          <p className="masthead-tagline">
+            "Hương vị bếp nhà — Ký ức một thời"
+          </p>
+        </div>
 
-          {/* Mobile buttons */}
-          <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={toggleTheme}
-              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
-              aria-label="Toggle theme"
-            >
-              {theme === "dark" ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
-            </button>
-            <button
-              onClick={() => setMenuOpen(!menuOpen)}
-              className="p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-all"
-              aria-label="Toggle menu"
-            >
-              {menuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
-          </div>
+        {/* Triple rule */}
+        <div className="page-container">
+          <hr className="masthead-rule" />
         </div>
       </div>
 
+      {/* Desktop Navigation */}
+      <nav className="nav-bar" aria-label="Điều hướng chính">
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            className={`nav-link${location === link.href ? " active" : ""}`}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </nav>
+
       {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="md:hidden bg-background/98 backdrop-blur-md border-b border-border">
-          <div className="px-4 pt-2 pb-4 flex flex-col gap-1">
-            {navLinks.map((link) => (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => setMenuOpen(false)}
-                className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
-                  location === link.href
-                    ? "bg-primary text-primary-foreground"
-                    : "text-muted-foreground hover:text-foreground hover:bg-accent"
-                }`}
-              >
-                {link.label}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
-    </nav>
+      <div className={`mobile-menu${mobileOpen ? " open" : ""}`}>
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            onClick={() => setMobileOpen(false)}
+            className={`mobile-nav-link${location === link.href ? " active" : ""}`}
+          >
+            {link.label}
+          </Link>
+        ))}
+      </div>
+    </header>
   );
 }

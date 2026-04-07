@@ -1,457 +1,517 @@
-export interface Dish {
-  id: string;
+export interface Ingredient {
+  amount: string;
   name: string;
-  slug: string;
-  category: string;
-  description: string;
-  image: string;
-  servings: number;
-  prepTime: number;
-  cookTime: number;
-  difficulty: "Dễ" | "Trung bình" | "Khó";
-  ingredients: string[];
-  steps: string[];
-  tags: string[];
 }
 
-export const categories = [
-  "Tất cả",
-  "Canh & Súp",
-  "Kho & Rim",
-  "Xào & Chiên",
-  "Luộc & Hấp",
-  "Cơm & Cháo",
-];
+export interface Step {
+  step: number;
+  title: string;
+  instruction: string;
+}
+
+export interface Dish {
+  id: number;
+  name: string;
+  slug: string;
+  category: "canh" | "kho" | "xao" | "luoc" | "com" | "bun";
+  region: string;
+  description: string;
+  image: string;
+  prepTime: string;
+  cookTime: string;
+  servings: number;
+  difficulty: "Dễ" | "Trung bình" | "Khó";
+  ingredients: Ingredient[];
+  steps: Step[];
+  story: string;
+}
+
+export const categoryLabels: Record<string, string> = {
+  canh: "Canh & Súp",
+  kho: "Kho & Rim",
+  xao: "Xào & Chiên",
+  luoc: "Luộc & Hấp",
+  com: "Cơm",
+  bun: "Bún & Phở",
+};
 
 export const dishes: Dish[] = [
   {
-    id: "1",
+    id: 1,
     name: "Canh Chua Cá Lóc",
     slug: "canh-chua-ca-loc",
-    category: "Canh & Súp",
+    category: "canh",
+    region: "Nam Bộ",
     description:
-      "Canh chua cá lóc là món ăn đặc trưng của miền Nam Việt Nam với vị chua thanh từ me, vị ngọt từ cá tươi, thêm cà chua, dứa và rau thơm. Mùi hương quyến rũ, vị ngon đậm đà khiến ai ăn một lần là nhớ mãi.",
+      "Canh chua cá lóc là linh hồn của bếp nhà miền Nam — vị chua thanh từ me chín, ngọt ngào từ cá đồng tươi, quyện cùng hương thơm ngò om và bạc hà. Mỗi tô canh là một buổi chiều quê nhà, khói bếp vấn vương.",
     image: "https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=800&q=80",
+    prepTime: "20 phút",
+    cookTime: "30 phút",
     servings: 4,
-    prepTime: 20,
-    cookTime: 30,
     difficulty: "Trung bình",
     ingredients: [
-      "500g cá lóc (cắt khúc)",
-      "100g me chua",
-      "2 trái cà chua chín",
-      "1/2 quả dứa",
-      "200g đậu bắp",
-      "100g giá đỗ",
-      "2 thân cây bạc hà",
-      "Ngò om (ngổ), ngò gai",
-      "2 thìa canh nước mắm",
-      "1 thìa canh đường",
-      "Muối, tiêu, ớt",
+      { amount: "500g", name: "cá lóc, làm sạch cắt khúc" },
+      { amount: "100g", name: "me chua" },
+      { amount: "2 trái", name: "cà chua chín" },
+      { amount: "1/2 quả", name: "dứa (thơm)" },
+      { amount: "200g", name: "đậu bắp" },
+      { amount: "100g", name: "giá đỗ" },
+      { amount: "2 cây", name: "bạc hà (dọc mùng)" },
+      { amount: "1 mớ", name: "ngò om, ngò gai" },
+      { amount: "3 muỗng canh", name: "nước mắm ngon" },
+      { amount: "1 muỗng canh", name: "đường" },
+      { amount: "vừa đủ", name: "muối, tiêu, ớt" },
     ],
     steps: [
-      "Ngâm me trong 200ml nước nóng khoảng 10 phút, lọc lấy nước me bỏ xác.",
-      "Cá lóc làm sạch, cắt khúc vừa ăn, ướp với muối và tiêu 10 phút.",
-      "Cà chua cắt múi cau, dứa cắt miếng vừa, đậu bắp cắt đôi chéo.",
-      "Bắc nồi lên bếp, đun sôi 1.5 lít nước, cho nước me vào.",
-      "Nêm nước mắm, đường, muối vừa ăn, đun sôi tiếp.",
-      "Cho cà chua và dứa vào, đun 5 phút.",
-      "Thả cá lóc vào, nấu thêm 10 phút đến khi cá chín.",
-      "Cho đậu bắp, giá đỗ, bạc hà vào, đun thêm 2-3 phút.",
-      "Rắc ngò om, ngò gai lên trên, tắt bếp.",
-      "Dọn ra tô, ăn nóng cùng cơm trắng.",
+      {
+        step: 1,
+        title: "Nấu nước me",
+        instruction:
+          "Ngâm me trong 200ml nước nóng khoảng 10 phút, bóp tan rồi lọc qua rây lấy nước cốt me, bỏ xác.",
+      },
+      {
+        step: 2,
+        title: "Sơ chế cá",
+        instruction:
+          "Cá lóc cắt khúc vừa ăn, rửa sạch với muối và gừng để khử mùi tanh, để ráo.",
+      },
+      {
+        step: 3,
+        title: "Chuẩn bị rau củ",
+        instruction:
+          "Cà chua cắt múi cau. Dứa cắt miếng vừa. Đậu bắp cắt đôi chéo. Bạc hà cắt khúc 5cm.",
+      },
+      {
+        step: 4,
+        title: "Nấu canh",
+        instruction:
+          "Đun sôi 1.5 lít nước, cho nước me vào. Nêm nước mắm, đường, muối vừa ăn. Cho cà chua và dứa vào đun 5 phút.",
+      },
+      {
+        step: 5,
+        title: "Cho cá vào",
+        instruction:
+          "Thả cá lóc vào nồi, nấu lửa vừa khoảng 10 phút đến khi cá chín mềm. Vớt bỏ bọt trắng.",
+      },
+      {
+        step: 6,
+        title: "Hoàn thiện",
+        instruction:
+          "Cho đậu bắp, bạc hà, giá đỗ vào đun thêm 3 phút. Tắt bếp, rắc ngò om, ngò gai lên trên. Ăn nóng với cơm trắng.",
+      },
     ],
-    tags: ["canh chua", "cá lóc", "miền Nam", "truyền thống"],
+    story:
+      "Ngày còn nhỏ, cứ mỗi chiều mưa, mẹ lại ra sau vườn hái ngò om và bẻ vài trái đậu bắp. Mùi canh chua sôi sùng sục từ trong bếp bay ra tận sân, kéo cả nhà vào bàn dù chưa đến giờ ăn. Canh chua không cần cá to hay nguyên liệu sang — chỉ cần bàn tay quen thuộc của người nấu là đã đủ ngon.",
   },
   {
-    id: "2",
+    id: 2,
     name: "Thịt Kho Trứng",
     slug: "thit-kho-trung",
-    category: "Kho & Rim",
+    category: "kho",
+    region: "Nam Bộ",
     description:
-      "Thịt kho trứng (hay còn gọi thịt kho tàu) là món ăn không thể thiếu trong mâm cơm gia đình Việt. Thịt ba chỉ mềm ngon, trứng thấm đẫm nước kho ngọt béo, màu sắc đẹp mắt - món ăn đặc trưng ngày Tết và bữa cơm hằng ngày.",
+      "Thịt kho trứng — hay còn gọi thịt kho tàu — là món ăn không thể vắng mặt trong mâm cơm ngày Tết. Nước dừa kho cùng thịt ba chỉ và trứng vịt tạo nên màu vàng óng ánh, vị mặn ngọt hòa quyện khiến cả nhà ăn không biết no.",
     image: "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=800&q=80",
+    prepTime: "15 phút",
+    cookTime: "60 phút",
     servings: 4,
-    prepTime: 15,
-    cookTime: 60,
     difficulty: "Dễ",
     ingredients: [
-      "500g thịt ba chỉ",
-      "6 quả trứng vịt (hoặc trứng gà)",
-      "3 thìa canh nước mắm",
-      "2 thìa canh đường",
-      "500ml nước dừa tươi",
-      "3 tép tỏi",
-      "2 nhánh hành lá",
-      "Tiêu xay, muối",
-      "Nước màu (nước hàng)",
+      { amount: "600g", name: "thịt ba chỉ, cắt miếng 4cm" },
+      { amount: "6 quả", name: "trứng vịt" },
+      { amount: "500ml", name: "nước dừa tươi" },
+      { amount: "3 muỗng canh", name: "nước mắm" },
+      { amount: "2 muỗng canh", name: "đường thốt nốt (hoặc đường cát)" },
+      { amount: "5 tép", name: "tỏi băm" },
+      { amount: "2 nhánh", name: "hành lá" },
+      { amount: "vừa đủ", name: "nước màu (nước hàng), tiêu" },
     ],
     steps: [
-      "Thịt ba chỉ cắt miếng vuông 4-5cm, trần qua nước sôi để loại bỏ mùi hôi.",
-      "Ướp thịt với nước mắm, đường, tỏi băm, tiêu trong 20 phút.",
-      "Luộc trứng chín cứng, bóc vỏ, ngâm vào nước nguội.",
-      "Bắc chảo lên bếp, phi thơm hành tỏi, cho thịt vào xào săn.",
-      "Cho nước dừa và vài giọt nước màu vào, đun sôi.",
-      "Hạ lửa nhỏ, nêm thêm nước mắm và đường cho vừa ăn.",
-      "Cho trứng vào, kho liu riu trong 40-50 phút.",
-      "Thỉnh thoảng lật trứng để thấm đều nước kho.",
-      "Khi nước kho sệt lại và thịt mềm là hoàn thành.",
-      "Rắc tiêu lên trên, dọn cùng cơm trắng và dưa cải muối.",
+      {
+        step: 1,
+        title: "Sơ chế thịt",
+        instruction:
+          "Thịt ba chỉ trần qua nước sôi 2 phút để loại bỏ mùi hôi. Vớt ra, rửa sạch, cắt miếng vuông 4cm.",
+      },
+      {
+        step: 2,
+        title: "Ướp thịt",
+        instruction:
+          "Ướp thịt với nước mắm, đường, tỏi băm, tiêu và vài giọt nước màu. Để ngấm 20 phút.",
+      },
+      {
+        step: 3,
+        title: "Luộc trứng",
+        instruction:
+          "Luộc trứng vịt chín cứng (khoảng 10 phút), bóc vỏ. Ngâm vào nước lạnh cho dễ bóc và tránh vỡ lòng.",
+      },
+      {
+        step: 4,
+        title: "Kho thịt",
+        instruction:
+          "Phi thơm tỏi, cho thịt vào xào săn. Đổ nước dừa vào xâm xấp. Đun sôi, hớt bọt rồi hạ lửa nhỏ.",
+      },
+      {
+        step: 5,
+        title: "Cho trứng vào",
+        instruction:
+          "Cho trứng đã bóc vào nồi. Kho liu riu 40–50 phút, thỉnh thoảng trở nhẹ cho trứng vàng đều.",
+      },
+      {
+        step: 6,
+        title: "Hoàn thiện",
+        instruction:
+          "Khi nước kho sệt lại và thịt mềm trong, nêm lại cho vừa ăn. Rắc tiêu, rắc hành lá. Ăn với cơm trắng và dưa cải muối.",
+      },
     ],
-    tags: ["thịt kho", "trứng", "truyền thống", "ngày Tết"],
+    story:
+      "Nồi thịt kho Tết nhà nào cũng có, nhưng không nhà nào giống nhà nào. Nhà tôi kho bằng đường thốt nốt nên có vị ngọt thanh riêng. Sáng mùng một, nồi thịt kho được hâm lại — mùi thơm từ bếp nhà nội lan ra cả xóm. Đó là mùi Tết thực sự, không thứ nước hoa nào sánh được.",
   },
   {
-    id: "3",
+    id: 3,
     name: "Cá Kho Tộ",
     slug: "ca-kho-to",
-    category: "Kho & Rim",
+    category: "kho",
+    region: "Toàn quốc",
     description:
-      "Cá kho tộ là món ăn dân dã quen thuộc của người Việt. Cá được kho trong nồi đất với nước mắm, đường và gừng tạo nên hương vị đậm đà, thơm ngon. Vị mặn ngọt hòa quyện khiến cơm trắng ăn mãi không biết chán.",
+      "Cá kho tộ trong nồi đất nung — món ăn bình dị mà đậm đà nhất của bữa cơm Việt. Nước kho sệt mặn ngọt thấm vào từng thớ cá, kết hợp hương gừng và tiêu đen — chỉ một miếng cũng đủ ăn hết chén cơm.",
     image: "https://images.unsplash.com/photo-1519984388953-d2406bc725e1?w=800&q=80",
+    prepTime: "10 phút",
+    cookTime: "45 phút",
     servings: 3,
-    prepTime: 10,
-    cookTime: 45,
     difficulty: "Dễ",
     ingredients: [
-      "500g cá (cá thu, cá basa, hoặc cá lóc)",
-      "3 thìa canh nước mắm",
-      "2 thìa canh đường",
-      "1 nhánh gừng",
-      "3 tép tỏi",
-      "2 quả ớt tươi",
-      "2 nhánh hành lá",
-      "Tiêu xay, muối",
-      "Dầu ăn, nước màu",
+      { amount: "500g", name: "cá (cá thu, cá basa hoặc cá lóc)" },
+      { amount: "3 muỗng canh", name: "nước mắm" },
+      { amount: "2 muỗng canh", name: "đường" },
+      { amount: "1 nhánh", name: "gừng tươi, đập dập" },
+      { amount: "4 tép", name: "tỏi" },
+      { amount: "2 quả", name: "ớt tươi" },
+      { amount: "vừa đủ", name: "nước màu, tiêu xay, dầu ăn" },
     ],
     steps: [
-      "Cá làm sạch, cắt khúc vừa ăn, ướp muối và tiêu 10 phút.",
-      "Gừng đập dập, tỏi băm nhuyễn, ớt cắt lát.",
-      "Pha hỗn hợp nước kho: nước mắm, đường, vài giọt nước màu.",
-      "Phi thơm tỏi và gừng trong nồi đất với một ít dầu.",
-      "Xếp cá vào nồi, đổ hỗn hợp nước kho lên trên.",
-      "Cho thêm 100ml nước vào, đun sôi ở lửa lớn.",
-      "Hạ lửa nhỏ, kho khoảng 30-35 phút.",
-      "Thỉnh thoảng lắc nhẹ nồi để cá không dính đáy.",
-      "Khi nước gần cạn, rắc tiêu và hành lá lên trên.",
-      "Ăn nóng với cơm trắng và rau luộc.",
+      {
+        step: 1,
+        title: "Sơ chế cá",
+        instruction: "Cá cắt khúc vừa ăn, ướp muối và tiêu 10 phút. Tỏi băm, gừng đập dập.",
+      },
+      {
+        step: 2,
+        title: "Pha nước kho",
+        instruction: "Trộn nước mắm + đường + vài giọt nước màu. Nếm thử — phải vừa mặn vừa ngọt.",
+      },
+      {
+        step: 3,
+        title: "Phi thơm",
+        instruction:
+          "Cho dầu vào tộ đất, phi thơm tỏi và gừng. Xếp cá vào tộ, đổ hỗn hợp nước kho lên.",
+      },
+      {
+        step: 4,
+        title: "Kho cá",
+        instruction:
+          "Thêm 100ml nước vào, đun sôi lửa lớn 5 phút. Hạ lửa thật nhỏ, kho tiếp 30–35 phút.",
+      },
+      {
+        step: 5,
+        title: "Hoàn thiện",
+        instruction:
+          "Khi nước kho gần cạn, rắc tiêu và ớt lên trên. Tắt bếp, để nguội chút rồi ăn với cơm trắng nóng hổi.",
+      },
     ],
-    tags: ["cá kho", "nồi đất", "truyền thống", "dân dã"],
+    story:
+      "Tộ cá kho của bà nội tôi lúc nào cũng đặt ở góc bếp, sáng nào cũng được hâm lên một lần. Qua ba ngày, nước kho cạn dần nhưng cá lại ngon hơn — vị đậm đà thêm lên theo từng giờ. Tôi không hiểu tại sao, chỉ biết rằng cá kho ngày thứ ba bao giờ cũng là ngon nhất.",
   },
   {
-    id: "4",
+    id: 4,
     name: "Rau Muống Xào Tỏi",
     slug: "rau-muong-xao-toi",
-    category: "Xào & Chiên",
+    category: "xao",
+    region: "Toàn quốc",
     description:
-      "Rau muống xào tỏi là món ăn đơn giản nhưng không thể vắng mặt trong mâm cơm Việt. Rau muống giòn xanh, thơm mùi tỏi phi vàng, vị vừa miệng là thức ăn kèm hoàn hảo cho bất kỳ món mặn nào.",
+      "Rau muống xào tỏi — đơn giản nhất mà lại không thể thiếu trong mâm cơm Việt. Rau xanh giòn, mùi tỏi thơm lừng từ chảo nóng, vị vừa miệng là thứ đưa cơm hoàn hảo cho mọi bữa ăn gia đình.",
     image: "https://images.unsplash.com/photo-1540420773420-3366772f4999?w=800&q=80",
+    prepTime: "10 phút",
+    cookTime: "8 phút",
     servings: 3,
-    prepTime: 10,
-    cookTime: 10,
     difficulty: "Dễ",
     ingredients: [
-      "500g rau muống",
-      "5 tép tỏi",
-      "2 thìa canh dầu ăn",
-      "1 thìa canh nước mắm",
-      "1/2 thìa cà phê muối",
-      "Tiêu xay",
-      "1 quả ớt (tùy khẩu vị)",
+      { amount: "500g", name: "rau muống, nhặt sạch" },
+      { amount: "6 tép", name: "tỏi, đập dập băm nhỏ" },
+      { amount: "2 muỗng canh", name: "dầu ăn" },
+      { amount: "1 muỗng canh", name: "nước mắm" },
+      { amount: "1 quả", name: "ớt tươi (tùy khẩu vị)" },
+      { amount: "vừa đủ", name: "muối, tiêu" },
     ],
     steps: [
-      "Rau muống nhặt sạch, rửa qua nhiều lần nước, cắt khúc 5-6cm.",
-      "Tỏi bóc vỏ, đập dập rồi băm nhuyễn.",
-      "Bắc chảo lên bếp lửa lớn, cho dầu vào đun nóng già.",
-      "Phi tỏi đến khi vàng thơm, chú ý không để tỏi cháy.",
-      "Cho rau muống vào xào nhanh tay ở lửa thật lớn.",
-      "Nêm nước mắm và muối, đảo đều.",
-      "Xào khoảng 3-4 phút đến khi rau chín tái, giữ màu xanh.",
-      "Rắc tiêu lên trên, dọn ngay ra đĩa.",
-      "Ăn nóng cùng cơm trắng.",
+      {
+        step: 1,
+        title: "Nhặt rau",
+        instruction:
+          "Rau muống nhặt bỏ lá già, cắt khúc 5–6cm. Rửa qua 3 lần nước, để thật ráo.",
+      },
+      {
+        step: 2,
+        title: "Phi tỏi",
+        instruction:
+          "Bắc chảo lửa thật lớn, cho dầu vào đun nóng già. Phi tỏi đến vàng thơm — chú ý không để cháy đen.",
+      },
+      {
+        step: 3,
+        title: "Xào rau",
+        instruction:
+          "Cho rau muống vào xào nhanh tay liên tục ở lửa thật lớn. Nêm nước mắm và muối, đảo đều.",
+      },
+      {
+        step: 4,
+        title: "Dọn ra",
+        instruction:
+          "Xào đến khi rau chín tái (3–4 phút), giữ màu xanh đẹp. Rắc tiêu, dọn ngay ra đĩa — ăn nguội sẽ mất giòn.",
+      },
     ],
-    tags: ["rau muống", "xào tỏi", "nhanh gọn", "hằng ngày"],
+    story:
+      "Rau muống xào tỏi là món tôi học nấu đầu tiên. Hồi còn học lớp 8, mẹ ra ngoài chợ trễ, tôi tự xào một mình — tỏi cháy đen, rau mềm nhũn. Nhưng mẹ về vẫn khen ngon. Sau này tôi mới hiểu: người ăn không cần món ngon hoàn hảo, họ cần thấy mình được nghĩ đến.",
   },
   {
-    id: "5",
-    name: "Canh Bầu Nấu Tôm",
-    slug: "canh-bau-nau-tom",
-    category: "Canh & Súp",
+    id: 5,
+    name: "Canh Khổ Qua Nhồi Thịt",
+    slug: "canh-kho-qua-nhoi-thit",
+    category: "canh",
+    region: "Nam Bộ",
     description:
-      "Canh bầu nấu tôm là món canh ngọt mát, thanh đạm phù hợp với mọi bữa ăn. Bầu mềm ngọt hòa với vị ngọt đậm từ tôm tươi tạo nên nước canh thơm ngon, bổ dưỡng. Đây là món canh được nấu nhiều nhất trong gia đình Việt.",
+      "Canh khổ qua nhồi thịt — món ăn vừa đắng vừa ngọt, như chính cuộc đời. Vị đắng thanh của khổ qua hòa với nước dùng ngọt trong từ xương và thịt băm — người ăn quen rồi sẽ thấy thiếu nếu không có nó trong mâm cơm.",
     image: "https://images.unsplash.com/photo-1547592180-85f173990554?w=800&q=80",
+    prepTime: "25 phút",
+    cookTime: "35 phút",
     servings: 4,
-    prepTime: 15,
-    cookTime: 20,
-    difficulty: "Dễ",
-    ingredients: [
-      "1 trái bầu vừa (~600g)",
-      "300g tôm sú (hoặc tôm thẻ)",
-      "3 nhánh hành lá",
-      "1 thìa canh nước mắm",
-      "1/2 thìa cà phê muối",
-      "Tiêu xay",
-      "Ngò rí (tùy thích)",
-    ],
-    steps: [
-      "Tôm bóc vỏ, rút chỉ đen, rửa sạch.",
-      "Bầu gọt vỏ, bỏ hột, rửa sạch, cắt miếng vừa ăn.",
-      "Đun sôi 1.2 lít nước trong nồi.",
-      "Cho tôm vào nấu đến khi tôm chín và dậy mùi thơm.",
-      "Cho bầu vào, đun tiếp khoảng 10-12 phút.",
-      "Nêm nước mắm và muối cho vừa ăn.",
-      "Khi bầu mềm, rắc hành lá và tiêu lên trên.",
-      "Tắt bếp, có thể thêm ngò rí cho thơm.",
-      "Dọn ra tô, ăn nóng cùng cơm.",
-    ],
-    tags: ["canh bầu", "tôm", "thanh đạm", "bổ dưỡng"],
-  },
-  {
-    id: "6",
-    name: "Đậu Hũ Chiên Sả Ớt",
-    slug: "dau-hu-chien-sa-ot",
-    category: "Xào & Chiên",
-    description:
-      "Đậu hũ chiên sả ớt là món ăn chay thơm ngon, giòn rụm bên ngoài, mềm mịn bên trong. Hương thơm của sả kết hợp vị cay nhẹ của ớt tạo nên món ăn hấp dẫn, phù hợp với cả người ăn mặn lẫn người ăn chay.",
-    image: "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=800&q=80",
-    servings: 3,
-    prepTime: 15,
-    cookTime: 20,
     difficulty: "Trung bình",
     ingredients: [
-      "400g đậu hũ cứng",
-      "3 cây sả",
-      "3 quả ớt đỏ tươi",
-      "4 tép tỏi",
-      "2 thìa canh nước tương",
-      "1 thìa canh đường",
-      "Dầu ăn để chiên",
-      "Muối, tiêu",
+      { amount: "4 quả", name: "khổ qua (mướp đắng) vừa" },
+      { amount: "300g", name: "thịt heo băm nhuyễn" },
+      { amount: "50g", name: "miến (bún tàu), ngâm mềm cắt ngắn" },
+      { amount: "3 cái", name: "nấm mèo, ngâm mềm băm nhỏ" },
+      { amount: "1 quả", name: "trứng gà" },
+      { amount: "2 muỗng canh", name: "nước mắm" },
+      { amount: "vừa đủ", name: "hành lá, tiêu, hạt nêm" },
     ],
     steps: [
-      "Đậu hũ cắt miếng vuông, thấm khô bằng khăn giấy.",
-      "Sả đập dập, băm nhuyễn phần trắng. Tỏi và ớt băm nhuyễn.",
-      "Chiên đậu hũ trong dầu nóng đến khi vàng giòn, vớt ra.",
-      "Phi thơm tỏi trong 2 thìa dầu.",
-      "Cho sả vào xào 2-3 phút đến khi dậy mùi thơm.",
-      "Thêm ớt vào xào cùng.",
-      "Cho đậu hũ đã chiên vào chảo.",
-      "Nêm nước tương, đường, đảo đều.",
-      "Xào thêm 2-3 phút cho thấm gia vị.",
-      "Rắc tiêu, dọn ra đĩa ăn với cơm trắng.",
+      {
+        step: 1,
+        title: "Sơ chế khổ qua",
+        instruction:
+          "Khổ qua cắt đôi hoặc cắt khúc 5cm, dùng muỗng nạo sạch ruột và hột. Ngâm nước muối loãng 10 phút để bớt đắng.",
+      },
+      {
+        step: 2,
+        title: "Làm nhân",
+        instruction:
+          "Trộn thịt băm + miến + nấm mèo + trứng gà + nước mắm + tiêu. Đánh đều cho nhân kết dính.",
+      },
+      {
+        step: 3,
+        title: "Nhồi nhân",
+        instruction:
+          "Nhét nhân thịt vào lòng khổ qua, ém chặt hai đầu. Không nhồi quá căng để nhân không bị vỡ ra khi nấu.",
+      },
+      {
+        step: 4,
+        title: "Nấu canh",
+        instruction:
+          "Đun sôi 1.5 lít nước (có thể dùng nước xương hầm). Nhẹ nhàng cho khổ qua đã nhồi vào, nấu lửa vừa 25–30 phút.",
+      },
+      {
+        step: 5,
+        title: "Nêm gia vị",
+        instruction:
+          "Nêm nước mắm và hạt nêm cho vừa ăn. Rắc hành lá và tiêu lên trên. Múc ra tô, ăn nóng.",
+      },
     ],
-    tags: ["đậu hũ", "chay", "sả ớt", "giòn rụm"],
+    story:
+      "Ba tôi không thích khổ qua vì đắng. Nhưng mỗi khi mẹ nấu canh này, ông lại ăn hết phần mình. Ông nói: 'Cái đắng nó làm ngọt hơn.' Mãi sau tôi mới hiểu ông không chỉ nói về khổ qua.",
   },
   {
-    id: "7",
-    name: "Sườn Non Hầm Khoai Tây",
-    slug: "suon-non-ham-khoai-tay",
-    category: "Canh & Súp",
+    id: 6,
+    name: "Cơm Tấm Sườn Bì",
+    slug: "com-tam-suon-bi",
+    category: "com",
+    region: "Sài Gòn",
     description:
-      "Sườn non hầm khoai tây là món ăn ấm áp, giàu dinh dưỡng. Sườn non mềm ngọt, khoai tây bùi bùi tan trong miệng, nước hầm đậm đà thơm ngon. Đây là món súp được cả nhà từ già đến trẻ đều yêu thích.",
-    image: "https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=800&q=80",
-    servings: 4,
-    prepTime: 20,
-    cookTime: 90,
-    difficulty: "Trung bình",
-    ingredients: [
-      "600g sườn non",
-      "3 củ khoai tây vừa",
-      "2 củ cà rốt",
-      "1 cây sả",
-      "3 nhánh hành lá",
-      "2 thìa canh nước mắm",
-      "1 thìa canh muối",
-      "Tiêu xay, hạt nêm",
-      "Ngò rí",
-    ],
-    steps: [
-      "Sườn non chặt miếng vừa ăn, trần qua nước sôi để loại bỏ tạp chất.",
-      "Khoai tây và cà rốt gọt vỏ, cắt miếng vừa.",
-      "Bắc nồi lên bếp, cho sườn và 2 lít nước vào đun sôi.",
-      "Hớt bỏ bọt, cho sả đập dập vào.",
-      "Hầm ở lửa nhỏ khoảng 45 phút đến khi sườn mềm.",
-      "Cho khoai tây và cà rốt vào hầm tiếp 20-25 phút.",
-      "Nêm nước mắm, muối, hạt nêm cho vừa ăn.",
-      "Khi rau củ mềm, tắt bếp.",
-      "Rắc hành lá, tiêu và ngò rí lên trên.",
-      "Múc ra tô, dùng nóng với bánh mì hoặc cơm.",
-    ],
-    tags: ["sườn hầm", "khoai tây", "ấm áp", "bổ dưỡng"],
-  },
-  {
-    id: "8",
-    name: "Gà Luộc Lá Chanh",
-    slug: "ga-luoc-la-chanh",
-    category: "Luộc & Hấp",
-    description:
-      "Gà luộc là món ăn thanh đạm, ngon ngọt tự nhiên. Thịt gà chắc thơm, da vàng óng và giòn nhẹ. Ăn kèm muối tiêu chanh lá chanh thơm lừng hay nước chấm gừng - đây là món không thể thiếu trong các dịp lễ Tết và giỗ chạp.",
-    image: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800&q=80",
-    servings: 4,
-    prepTime: 20,
-    cookTime: 45,
-    difficulty: "Trung bình",
-    ingredients: [
-      "1 con gà ta (~1.5kg)",
-      "1 nhánh gừng",
-      "3 nhánh sả",
-      "5-6 lá chanh",
-      "2 thìa canh muối",
-      "Nước chấm: muối tiêu chanh lá chanh",
-      "Hoặc: gừng băm, muối, tiêu, dầu ăn",
-    ],
-    steps: [
-      "Gà làm sạch, nhổ lông còn sót, rửa sạch với muối.",
-      "Dùng gừng chà xát khắp thân gà để khử mùi.",
-      "Nhét sả và lá chanh vào bụng gà.",
-      "Bắc nồi nước đủ ngập gà, thêm muối và gừng đập dập vào.",
-      "Cho gà vào nước lạnh, đun sôi ở lửa lớn.",
-      "Hớt bọt, hạ lửa vừa, luộc tiếp 35-40 phút.",
-      "Dùng đũa xiên vào đùi gà, không thấy nước hồng là chín.",
-      "Vớt gà ra, nhúng ngay vào nước đá lạnh để da giòn và vàng đẹp.",
-      "Để nguội, chặt miếng xếp ra đĩa.",
-      "Ăn kèm muối tiêu chanh lá chanh hoặc nước chấm gừng.",
-    ],
-    tags: ["gà luộc", "lá chanh", "ngày Tết", "lễ giỗ"],
-  },
-  {
-    id: "9",
-    name: "Cháo Gà",
-    slug: "chao-ga",
-    category: "Cơm & Cháo",
-    description:
-      "Cháo gà nóng hổi, béo ngậy với thịt gà xé sợi mềm mịn là món ăn bổ dưỡng tuyệt vời cho ngày mệt mỏi hay khi trái gió trở trời. Hương thơm gừng, hành lá cùng tiêu đen khiến bát cháo thêm phần hấp dẫn.",
-    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80",
-    servings: 4,
-    prepTime: 20,
-    cookTime: 60,
-    difficulty: "Dễ",
-    ingredients: [
-      "1/2 con gà (~700g)",
-      "200g gạo tẻ",
-      "1 nhánh gừng",
-      "3 nhánh hành lá",
-      "2 thìa canh nước mắm",
-      "Muối, tiêu xay",
-      "Ngò rí",
-      "Quẩy (dầu chảo) ăn kèm tùy thích",
-    ],
-    steps: [
-      "Gà làm sạch, luộc chín với gừng và muối. Để nguội xé thịt.",
-      "Lấy nước luộc gà làm nước cháo.",
-      "Gạo vo sạch, rang khô đến khi dậy mùi thơm.",
-      "Cho gạo vào nồi nước luộc gà (khoảng 2 lít), đun sôi.",
-      "Hạ lửa nhỏ, khuấy đều và nấu khoảng 40-45 phút.",
-      "Nêm nước mắm và muối cho vừa ăn.",
-      "Khi cháo đặc sệt và hạt gạo nở bung, cho thịt gà xé vào.",
-      "Đun thêm 5 phút, khuấy đều.",
-      "Múc ra tô, rắc tiêu, hành lá, ngò rí lên trên.",
-      "Ăn nóng cùng quẩy.",
-    ],
-    tags: ["cháo gà", "bổ dưỡng", "dễ tiêu", "ngày ốm"],
-  },
-  {
-    id: "10",
-    name: "Trứng Chiên Cà Chua",
-    slug: "trung-chien-ca-chua",
-    category: "Xào & Chiên",
-    description:
-      "Trứng chiên cà chua là món ăn quen thuộc nhất trong mâm cơm Việt. Đơn giản nhưng ngon miệng với trứng béo béo, cà chua chua ngọt, sốt đậm đà. Món ăn tuổi thơ của bao thế hệ người Việt.",
-    image: "https://images.unsplash.com/photo-1525351484163-7529414344d8?w=800&q=80",
-    servings: 2,
-    prepTime: 5,
-    cookTime: 15,
-    difficulty: "Dễ",
-    ingredients: [
-      "4 quả trứng gà",
-      "3 quả cà chua chín",
-      "3 tép tỏi",
-      "2 nhánh hành lá",
-      "2 thìa canh nước mắm",
-      "1 thìa canh đường",
-      "Dầu ăn, muối, tiêu",
-    ],
-    steps: [
-      "Đánh trứng với một nhúm muối và chút tiêu.",
-      "Cà chua rửa sạch, cắt múi cau hoặc cắt hạt lựu.",
-      "Tỏi băm nhuyễn, hành lá cắt nhỏ.",
-      "Cho dầu vào chảo nóng, đổ trứng vào chiên vàng cả hai mặt.",
-      "Bẻ trứng thành từng miếng nhỏ, vớt ra để riêng.",
-      "Phi thơm tỏi trong dầu, cho cà chua vào xào mềm.",
-      "Nêm nước mắm và đường, xào đến khi cà chua ra nước.",
-      "Cho trứng đã chiên vào, đảo đều.",
-      "Xào thêm 2 phút cho trứng ngấm sốt cà chua.",
-      "Rắc hành lá và tiêu, dọn ra đĩa ăn với cơm.",
-    ],
-    tags: ["trứng chiên", "cà chua", "đơn giản", "hằng ngày"],
-  },
-  {
-    id: "11",
-    name: "Canh Rau Ngót Thịt Băm",
-    slug: "canh-rau-ngot-thit-bam",
-    category: "Canh & Súp",
-    description:
-      "Canh rau ngót nấu với thịt băm là món canh quen thuộc, đơn giản mà bổ dưỡng. Rau ngót có vị ngọt mát tự nhiên, kết hợp với thịt băm tạo nên bát canh xanh mướt, thơm ngon và dễ nấu.",
-    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
-    servings: 4,
-    prepTime: 10,
-    cookTime: 15,
-    difficulty: "Dễ",
-    ingredients: [
-      "300g rau ngót",
-      "200g thịt heo băm",
-      "2 thìa canh nước mắm",
-      "Muối, tiêu",
-      "Hành lá",
-    ],
-    steps: [
-      "Rau ngót nhặt lá, rửa sạch qua nhiều lần nước.",
-      "Thịt băm ướp với nước mắm, muối và tiêu.",
-      "Đun sôi 1 lít nước trong nồi.",
-      "Cho thịt băm vào, khuấy đều để thịt không vón cục.",
-      "Đun sôi và hớt bọt.",
-      "Nêm nước mắm và muối cho vừa.",
-      "Cho rau ngót vào, đun thêm 3-4 phút.",
-      "Khi rau vừa chín tái, tắt bếp ngay để giữ màu xanh.",
-      "Rắc tiêu và hành lá lên trên.",
-      "Dọn ra tô, ăn nóng với cơm.",
-    ],
-    tags: ["rau ngót", "thịt băm", "đơn giản", "bổ dưỡng"],
-  },
-  {
-    id: "12",
-    name: "Cơm Chiên Dương Châu",
-    slug: "com-chien-duong-chau",
-    category: "Cơm & Cháo",
-    description:
-      "Cơm chiên Dương Châu là món ăn nhanh, tiện lợi và thơm ngon. Cơm chiên cùng trứng, tôm, lạp xưởng và đậu Hà Lan tạo nên bữa ăn đầy màu sắc, giàu dinh dưỡng. Phù hợp cho bữa sáng hoặc khi nhà không có nhiều thức ăn.",
+      "Cơm tấm là linh hồn ẩm thực đường phố Sài Gòn — hạt cơm tấm trắng tinh với sườn nướng thơm lừng, bì trộn thính, chả trứng, mỡ hành xanh và nước mắm pha chua ngọt đặc trưng. Một đĩa cơm tấm là cả một buổi sáng Sài Gòn.",
     image: "https://images.unsplash.com/photo-1603133872878-684f208fb84b?w=800&q=80",
-    servings: 3,
-    prepTime: 15,
-    cookTime: 20,
-    difficulty: "Trung bình",
+    prepTime: "30 phút",
+    cookTime: "30 phút",
+    servings: 4,
+    difficulty: "Khó",
     ingredients: [
-      "3 chén cơm nguội",
-      "3 quả trứng gà",
-      "200g tôm sú (bóc vỏ)",
-      "2 khúc lạp xưởng",
-      "100g đậu Hà Lan",
-      "3 tép tỏi",
-      "3 thìa canh nước tương",
-      "1 thìa canh dầu mè",
-      "Dầu ăn, muối, tiêu",
+      { amount: "400g", name: "gạo tấm" },
+      { amount: "500g", name: "sườn non cắt miếng vừa" },
+      { amount: "200g", name: "bì heo (da heo luộc thái sợi)" },
+      { amount: "50g", name: "thính gạo rang" },
+      { amount: "4 quả", name: "trứng gà (làm chả)" },
+      { amount: "3 muỗng canh", name: "nước mắm (ướp sườn)" },
+      { amount: "2 muỗng canh", name: "đường, sả băm, tỏi băm" },
+      { amount: "1 mớ", name: "hành lá, mỡ hành" },
+      { amount: "vừa đủ", name: "nước mắm pha, dưa chua, cà chua" },
     ],
     steps: [
-      "Lạp xưởng cắt lát mỏng, tôm rửa sạch, ướp ít muối tiêu.",
-      "Đánh trứng, nêm ít muối.",
-      "Tỏi băm nhuyễn.",
-      "Cho dầu vào chảo, xào lạp xưởng vàng, vớt ra.",
-      "Xào tôm đến khi chín, vớt ra.",
-      "Phi thơm tỏi, đổ trứng vào xào nhanh.",
-      "Cho cơm nguội vào, dùng muỗng dầm tơi hạt cơm.",
-      "Xào ở lửa lớn, đảo liên tục khoảng 5 phút.",
-      "Cho lạp xưởng, tôm, đậu Hà Lan vào, đảo đều.",
-      "Nêm nước tương, dầu mè, tiêu. Xào thêm 2 phút rồi dọn ra đĩa.",
+      {
+        step: 1,
+        title: "Ướp sườn",
+        instruction:
+          "Ướp sườn với nước mắm, đường, sả băm, tỏi băm, tiêu tối thiểu 2 tiếng (qua đêm càng tốt).",
+      },
+      {
+        step: 2,
+        title: "Nấu cơm tấm",
+        instruction:
+          "Vo gạo tấm, đổ nước theo tỉ lệ 1:1.2. Nấu như cơm thường, sau khi sôi thì hạ lửa nhỏ riu riu.",
+      },
+      {
+        step: 3,
+        title: "Nướng sườn",
+        instruction:
+          "Nướng sườn trên vỉ than hoặc lò nướng 200°C khoảng 15–20 phút, trở đều. Phết thêm mỡ hành lên khi nướng.",
+      },
+      {
+        step: 4,
+        title: "Trộn bì",
+        instruction:
+          "Bì heo thái sợi trộn đều với thính gạo rang, thêm chút tỏi phi và tiêu. Bì phải trộn khi còn ấm để thính bám đều.",
+      },
+      {
+        step: 5,
+        title: "Dọn đĩa",
+        instruction:
+          "Xới cơm ra đĩa, xếp sườn nướng + bì + chả trứng chiên lên trên. Thêm mỡ hành, hành phi, dưa leo. Chan nước mắm pha.",
+      },
     ],
-    tags: ["cơm chiên", "Dương Châu", "nhanh gọn", "tiện lợi"],
+    story:
+      "Buổi sáng Sài Gòn không có gì bằng ngồi vỉa hè, đĩa cơm tấm bốc khói, ly cà phê sữa đá bên cạnh. Tiếng xe cộ ồn ào, mùi sườn nướng bay từ bếp than — đó là Sài Gòn của tôi, không bao giờ quên được dù đi xa bao lâu.",
   },
+  {
+    id: 7,
+    name: "Bún Bò Huế",
+    slug: "bun-bo-hue",
+    category: "bun",
+    region: "Huế",
+    description:
+      "Bún bò Huế — sắc đỏ cay nồng của nồi nước lèo xứ Huế, thơm mùi sả và mắm ruốc. Khoanh bún trắng mềm, miếng bò giòn dai, giò heo trong vắt — tô bún Huế là cả một cơn nắng miền Trung đổ vào lòng.",
+    image: "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=800&q=80",
+    prepTime: "40 phút",
+    cookTime: "120 phút",
+    servings: 6,
+    difficulty: "Khó",
+    ingredients: [
+      { amount: "500g", name: "bắp bò (thịt bò bắp)" },
+      { amount: "2 cái", name: "giò heo (chân giò)" },
+      { amount: "500g", name: "bún tươi (bún sợi to)" },
+      { amount: "3 cây", name: "sả, đập dập" },
+      { amount: "2 muỗng canh", name: "mắm ruốc Huế" },
+      { amount: "2 muỗng canh", name: "sả băm, tỏi ớt băm" },
+      { amount: "1 muỗng canh", name: "bột màu điều (ớt dầu)" },
+      { amount: "vừa đủ", name: "nước mắm, đường, muối" },
+      { amount: "1 mớ", name: "rau ăn kèm: bắp chuối, giá, rau thơm" },
+    ],
+    steps: [
+      {
+        step: 1,
+        title: "Hầm xương",
+        instruction:
+          "Trần giò heo và bắp bò qua nước sôi. Hầm cùng 2 lít nước, sả và muối trong 60–90 phút cho nước trong và ngọt.",
+      },
+      {
+        step: 2,
+        title: "Phi gia vị",
+        instruction:
+          "Phi thơm sả băm + tỏi + ớt với dầu màu điều đến khi dậy mùi thơm đỏ đẹp. Cho vào nồi nước lèo.",
+      },
+      {
+        step: 3,
+        title: "Nêm mắm ruốc",
+        instruction:
+          "Pha mắm ruốc với chút nước ấm, cho vào nồi. Nêm nước mắm + đường cho vừa ăn — nước lèo phải đậm đà, hơi cay.",
+      },
+      {
+        step: 4,
+        title: "Chuẩn bị thịt",
+        instruction:
+          "Vớt bắp bò ra để nguội, thái lát mỏng. Giò heo thái miếng. Xếp riêng ra đĩa.",
+      },
+      {
+        step: 5,
+        title: "Dọn tô",
+        instruction:
+          "Chần bún qua nước sôi, xếp vào tô. Cho bắp bò + giò heo lên, chan nước lèo nóng. Ăn kèm bắp chuối thái mỏng, giá, rau thơm và ớt tươi.",
+      },
+    ],
+    story:
+      "Lần đầu tôi ăn bún bò ở Huế là một sáng mưa dầm, trong tiệm bà cụ ở đường Nguyễn Bỉnh Khiêm. Tô bún đặt xuống, hơi nóng bốc lên — mùi sả và mắm ruốc quyện vào nhau, lạ mà quen. Kể từ đó, mỗi lần nhớ Huế là nhớ cái mùi đó.",
+  },
+  {
+    id: 8,
+    name: "Bánh Canh Cua",
+    slug: "banh-canh-cua",
+    category: "bun",
+    region: "Nam Bộ",
+    description:
+      "Bánh canh cua — sợi bánh canh bột lọc dày mịn, sánh đặc trong nước dùng cua đồng béo ngậy màu cam san hô. Thêm tôm, chả cua, hành phi vàng — một tô bánh canh cua là bữa sáng no nê, ấm lòng nhất của người miền Nam.",
+    image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=800&q=80",
+    prepTime: "30 phút",
+    cookTime: "45 phút",
+    servings: 4,
+    difficulty: "Trung bình",
+    ingredients: [
+      { amount: "400g", name: "bánh canh bột lọc (sợi to)" },
+      { amount: "500g", name: "cua đồng (3–4 con)" },
+      { amount: "200g", name: "tôm sú, bóc vỏ" },
+      { amount: "200g", name: "chả cua (tùy chọn)" },
+      { amount: "2 muỗng canh", name: "dầu hành phi" },
+      { amount: "3 muỗng canh", name: "nước mắm" },
+      { amount: "vừa đủ", name: "hành lá, ngò rí, tiêu, ớt" },
+    ],
+    steps: [
+      {
+        step: 1,
+        title: "Nấu nước cua",
+        instruction:
+          "Giã cua với chút muối, lọc qua rây lấy nước. Đun nước cua trên lửa vừa, khuấy theo một chiều đến khi gạch cua nổi lên — vớt gạch để riêng.",
+      },
+      {
+        step: 2,
+        title: "Nấu nước dùng",
+        instruction:
+          "Cho nước cua đã lọc vào nồi lớn cùng 1.5 lít nước. Đun sôi, nêm nước mắm và muối. Cho tôm vào nấu chín.",
+      },
+      {
+        step: 3,
+        title: "Chần bánh canh",
+        instruction:
+          "Chần bánh canh qua nước sôi 1–2 phút cho mềm và sạch bột dư. Vớt ra, xả nước lạnh.",
+      },
+      {
+        step: 4,
+        title: "Làm sệt nước dùng",
+        instruction:
+          "Hòa bột năng với nước lạnh, từ từ đổ vào nồi nước dùng đang sôi, khuấy đều cho đến khi nước sánh lại.",
+      },
+      {
+        step: 5,
+        title: "Dọn tô",
+        instruction:
+          "Xếp bánh canh vào tô, chan nước dùng nóng lên. Xếp gạch cua, tôm, chả cua. Rắc hành lá, ngò, tiêu, thêm chút dầu hành vàng ươm.",
+      },
+    ],
+    story:
+      "Xe bánh canh bà Tư ở đầu hẻm mở từ năm giờ sáng, khói bốc nghi ngút. Hồi học tiểu học, tôi hay theo ba ghé mua trước khi đến trường. Tô bánh canh cua nóng hổi, thêm miếng chả cua vàng ruộm — đó là ký ức sáng sớm trong lành nhất của tôi.",
+  },
+];
+
+export const categories = [
+  { value: "all", label: "Tất Cả" },
+  { value: "canh", label: "Canh & Súp" },
+  { value: "kho", label: "Kho & Rim" },
+  { value: "xao", label: "Xào & Chiên" },
+  { value: "luoc", label: "Luộc & Hấp" },
+  { value: "com", label: "Cơm" },
+  { value: "bun", label: "Bún & Phở" },
 ];

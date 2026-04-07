@@ -1,21 +1,18 @@
 import { useState, useEffect } from "react";
 
-type Theme = "light" | "dark";
-
 export function useTheme() {
-  const [theme, setTheme] = useState<Theme>(() => {
-    const stored = localStorage.getItem("vinha-theme");
-    if (stored === "dark" || stored === "light") return stored;
-    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  const [isDark, setIsDark] = useState<boolean>(() => {
+    const stored = localStorage.getItem("vinha-dark");
+    if (stored !== null) return stored === "true";
+    return window.matchMedia("(prefers-color-scheme: dark)").matches;
   });
 
   useEffect(() => {
-    const root = document.documentElement;
-    root.classList.toggle("dark", theme === "dark");
-    localStorage.setItem("vinha-theme", theme);
-  }, [theme]);
+    document.documentElement.classList.toggle("dark", isDark);
+    localStorage.setItem("vinha-dark", String(isDark));
+  }, [isDark]);
 
-  const toggleTheme = () => setTheme((t) => (t === "dark" ? "light" : "dark"));
+  const toggleDark = () => setIsDark((v) => !v);
 
-  return { theme, toggleTheme };
+  return { isDark, toggleDark };
 }

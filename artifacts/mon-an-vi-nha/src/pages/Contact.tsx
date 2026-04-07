@@ -1,252 +1,237 @@
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send, CheckCircle } from "lucide-react";
+import { Send, CheckCircle, Mail, Phone, MapPin } from "lucide-react";
 
 export default function Contact() {
-  const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    subject: "",
-    message: "",
-  });
+  const [form, setForm] = useState({ name: "", email: "", subject: "", message: "" });
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [submitted, setSubmitted] = useState(false);
 
   const validate = () => {
-    const newErrors: Record<string, string> = {};
-    if (!form.name.trim()) newErrors.name = "Vui lòng nhập họ tên";
-    if (!form.email.trim()) {
-      newErrors.email = "Vui lòng nhập email";
-    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) {
-      newErrors.email = "Email không hợp lệ";
-    }
-    if (!form.message.trim()) newErrors.message = "Vui lòng nhập nội dung";
-    return newErrors;
+    const e: Record<string, string> = {};
+    if (!form.name.trim()) e.name = "Vui lòng nhập họ tên";
+    if (!form.email.trim()) e.email = "Vui lòng nhập email";
+    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) e.email = "Email không hợp lệ";
+    if (!form.message.trim()) e.message = "Vui lòng nhập nội dung";
+    return e;
+  };
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setForm((p) => ({ ...p, [e.target.name]: e.target.value }));
+    if (errors[e.target.name]) setErrors((p) => ({ ...p, [e.target.name]: "" }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    const newErrors = validate();
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return;
-    }
-    setErrors({});
+    const errs = validate();
+    if (Object.keys(errs).length) { setErrors(errs); return; }
     setSubmitted(true);
   };
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-    if (errors[e.target.name]) {
-      setErrors((prev) => ({ ...prev, [e.target.name]: "" }));
-    }
-  };
-
-  const contactInfo = [
-    {
-      icon: <Mail className="w-5 h-5" />,
-      label: "Email",
-      value: "hello@vinha.vn",
-      href: "mailto:hello@vinha.vn",
-    },
-    {
-      icon: <Phone className="w-5 h-5" />,
-      label: "Điện Thoại",
-      value: "+84 (0) 123 456 789",
-      href: "tel:+840123456789",
-    },
-    {
-      icon: <MapPin className="w-5 h-5" />,
-      label: "Địa Chỉ",
-      value: "123 Đường Ẩm Thực, Quận 1, TP. HCM",
-      href: "#",
-    },
-  ];
-
   return (
-    <div className="min-h-screen pt-20 pb-16">
-      {/* Header */}
-      <div className="bg-primary/5 border-b border-border py-10">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-1">
-            Kết Nối
-          </p>
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground">
+    <div className="paper-texture" style={{ minHeight: "80vh" }}>
+      <div className="page-hero">
+        <div className="page-container">
+          <p className="section-label">Kết Nối</p>
+          <h1 style={{ fontFamily: "var(--font-display)", fontSize: "clamp(1.8rem,4vw,2.8rem)", color: "var(--color-ink)" }}>
             Liên Hệ Với Chúng Tôi
           </h1>
-          <p className="text-muted-foreground mt-2 max-w-lg">
-            Bạn có câu hỏi, góp ý hay muốn chia sẻ công thức? Hãy nhắn gửi cho chúng tôi.
+          <p style={{ fontFamily: "var(--font-body)", color: "var(--color-muted)", fontSize: "0.9rem", marginTop: "0.35rem" }}>
+            Có câu hỏi, góp ý, hay muốn chia sẻ công thức? Chúng tôi luôn lắng nghe.
           </p>
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid lg:grid-cols-5 gap-10">
-          {/* Contact Info */}
-          <div className="lg:col-span-2">
-            <h2 className="text-xl font-bold text-foreground mb-6">Thông Tin Liên Hệ</h2>
-            <div className="space-y-4 mb-8">
-              {contactInfo.map((info) => (
-                <a
-                  key={info.label}
-                  href={info.href}
-                  className="flex items-start gap-4 p-4 bg-card border border-border rounded-xl hover:border-primary/40 transition-all group"
-                >
-                  <div className="w-10 h-10 bg-primary/10 rounded-xl flex items-center justify-center text-primary flex-shrink-0 group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                    {info.icon}
-                  </div>
-                  <div>
-                    <div className="text-sm text-muted-foreground">{info.label}</div>
-                    <div className="text-foreground font-medium">{info.value}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
+      <div className="page-container" style={{ paddingTop: "2rem", paddingBottom: "3rem" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "1fr 1.5fr",
+            gap: "3rem",
+            alignItems: "start",
+          }}
+          className="contact-grid"
+        >
+          {/* Contact info */}
+          <div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.15rem",
+                color: "var(--color-ink)",
+                borderBottom: "2px solid var(--color-ink)",
+                paddingBottom: "0.4rem",
+                marginBottom: "1.25rem",
+              }}
+            >
+              Thông Tin Liên Hệ
+            </h2>
+
+            {[
+              { icon: <Mail size={16} />, label: "Email", value: "hello@vinha.vn" },
+              { icon: <Phone size={16} />, label: "Điện Thoại", value: "+84 (0) 123 456 789" },
+              { icon: <MapPin size={16} />, label: "Địa Chỉ", value: "123 Đường Ẩm Thực, Quận 1, TP. HCM" },
+            ].map((item) => (
+              <div
+                key={item.label}
+                style={{
+                  display: "flex",
+                  gap: "0.75rem",
+                  alignItems: "flex-start",
+                  marginBottom: "1rem",
+                  paddingBottom: "1rem",
+                  borderBottom: "1px dotted var(--color-rule)",
+                }}
+              >
+                <span style={{ color: "var(--color-red)", marginTop: "0.1rem" }}>{item.icon}</span>
+                <div>
+                  <p className="field-label" style={{ marginBottom: "0.1rem" }}>{item.label}</p>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.88rem", color: "var(--color-ink-light)" }}>
+                    {item.value}
+                  </p>
+                </div>
+              </div>
+            ))}
 
             {/* FAQ */}
-            <div className="bg-card border border-border rounded-2xl p-5">
-              <h3 className="font-semibold text-foreground mb-4">Câu Hỏi Thường Gặp</h3>
-              <div className="space-y-3">
-                {[
-                  {
-                    q: "Công thức có miễn phí không?",
-                    a: "Tất cả công thức đều miễn phí hoàn toàn.",
-                  },
-                  {
-                    q: "Tôi có thể gửi công thức của mình không?",
-                    a: "Có! Liên hệ chúng tôi qua email để chia sẻ.",
-                  },
-                  {
-                    q: "Công thức có phù hợp người mới không?",
-                    a: "Có, chúng tôi phân loại theo độ khó rõ ràng.",
-                  },
-                ].map((item) => (
-                  <div key={item.q}>
-                    <p className="text-sm font-medium text-foreground">{item.q}</p>
-                    <p className="text-sm text-muted-foreground mt-0.5">{item.a}</p>
-                  </div>
-                ))}
-              </div>
+            <div
+              style={{
+                background: "var(--color-card-bg)",
+                border: "1px solid var(--color-gold-light)",
+                padding: "1.1rem",
+                marginTop: "1rem",
+              }}
+            >
+              <h3
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "0.9rem",
+                  color: "var(--color-ink)",
+                  marginBottom: "0.75rem",
+                  borderBottom: "1px solid var(--color-rule)",
+                  paddingBottom: "0.35rem",
+                }}
+              >
+                Câu Hỏi Thường Gặp
+              </h3>
+              {[
+                { q: "Công thức có miễn phí không?", a: "Tất cả đều miễn phí hoàn toàn." },
+                { q: "Tôi có thể gửi công thức không?", a: "Có! Liên hệ qua email để chia sẻ." },
+                { q: "Có công thức cho người mới không?", a: "Có, phân loại theo độ khó rõ ràng." },
+              ].map((item) => (
+                <div key={item.q} style={{ marginBottom: "0.65rem" }}>
+                  <p style={{ fontFamily: "var(--font-caption)", fontSize: "0.75rem", fontWeight: 600, color: "var(--color-ink)" }}>
+                    {item.q}
+                  </p>
+                  <p style={{ fontFamily: "var(--font-body)", fontSize: "0.78rem", color: "var(--color-muted)", marginTop: "0.1rem" }}>
+                    {item.a}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div className="lg:col-span-3">
+          {/* Form */}
+          <div>
+            <h2
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "1.15rem",
+                color: "var(--color-ink)",
+                borderBottom: "2px solid var(--color-ink)",
+                paddingBottom: "0.4rem",
+                marginBottom: "1.25rem",
+              }}
+            >
+              Gửi Tin Nhắn
+            </h2>
+
             {submitted ? (
-              <div className="flex flex-col items-center justify-center h-full py-16 text-center">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mb-4">
-                  <CheckCircle className="w-8 h-8 text-green-600 dark:text-green-400" />
-                </div>
-                <h2 className="text-2xl font-bold text-foreground mb-2">
-                  Cảm ơn bạn!
-                </h2>
-                <p className="text-muted-foreground mb-6 max-w-md">
-                  Chúng tôi đã nhận được tin nhắn của bạn. Chúng tôi sẽ phản hồi
-                  sớm nhất có thể, thường trong vòng 24 giờ.
+              <div
+                style={{
+                  textAlign: "center",
+                  padding: "3rem 1rem",
+                  border: "1px solid var(--color-gold-light)",
+                  background: "var(--color-card-bg)",
+                }}
+              >
+                <CheckCircle size={36} color="var(--color-green)" style={{ margin: "0 auto 1rem" }} />
+                <h3
+                  style={{
+                    fontFamily: "var(--font-display)",
+                    fontSize: "1.2rem",
+                    color: "var(--color-ink)",
+                    marginBottom: "0.5rem",
+                  }}
+                >
+                  Cảm Ơn Bạn!
+                </h3>
+                <p style={{ fontFamily: "var(--font-body)", color: "var(--color-muted)", fontSize: "0.88rem", marginBottom: "1.25rem" }}>
+                  Chúng tôi đã nhận được tin nhắn và sẽ phản hồi sớm nhất có thể.
                 </p>
                 <button
-                  onClick={() => {
-                    setSubmitted(false);
-                    setForm({ name: "", email: "", subject: "", message: "" });
-                  }}
-                  className="bg-primary text-primary-foreground px-5 py-2.5 rounded-xl font-medium hover:bg-primary/90 transition-colors"
+                  className="btn-outline"
+                  onClick={() => { setSubmitted(false); setForm({ name: "", email: "", subject: "", message: "" }); }}
                 >
                   Gửi tin nhắn khác
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} noValidate className="space-y-5">
-                <h2 className="text-xl font-bold text-foreground mb-6">Gửi Tin Nhắn</h2>
-
-                <div className="grid sm:grid-cols-2 gap-5">
+              <form onSubmit={handleSubmit} noValidate style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }} className="form-two-col">
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">
-                      Họ và Tên <span className="text-destructive">*</span>
-                    </label>
-                    <input
-                      type="text"
-                      name="name"
-                      value={form.name}
-                      onChange={handleChange}
-                      placeholder="Nguyễn Văn A"
-                      className={`w-full px-4 py-2.5 border rounded-xl bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-colors ${
-                        errors.name ? "border-destructive" : "border-border"
-                      }`}
-                    />
-                    {errors.name && (
-                      <p className="mt-1 text-xs text-destructive">{errors.name}</p>
-                    )}
+                    <label className="field-label">Họ và Tên <span style={{ color: "var(--color-red)" }}>*</span></label>
+                    <input className={`field-input${errors.name ? " error" : ""}`} name="name" value={form.name} onChange={handleChange} placeholder="Nguyễn Văn A" />
+                    {errors.name && <p className="field-error">{errors.name}</p>}
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-foreground mb-1.5">
-                      Email <span className="text-destructive">*</span>
-                    </label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={form.email}
-                      onChange={handleChange}
-                      placeholder="email@example.com"
-                      className={`w-full px-4 py-2.5 border rounded-xl bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm transition-colors ${
-                        errors.email ? "border-destructive" : "border-border"
-                      }`}
-                    />
-                    {errors.email && (
-                      <p className="mt-1 text-xs text-destructive">{errors.email}</p>
-                    )}
+                    <label className="field-label">Email <span style={{ color: "var(--color-red)" }}>*</span></label>
+                    <input className={`field-input${errors.email ? " error" : ""}`} name="email" type="email" value={form.email} onChange={handleChange} placeholder="email@example.com" />
+                    {errors.email && <p className="field-error">{errors.email}</p>}
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    Chủ Đề
-                  </label>
-                  <select
-                    name="subject"
-                    value={form.subject}
-                    onChange={handleChange}
-                    className="w-full px-4 py-2.5 border border-border rounded-xl bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm"
-                  >
+                  <label className="field-label">Chủ Đề</label>
+                  <select className="field-input" name="subject" value={form.subject} onChange={handleChange}>
                     <option value="">Chọn chủ đề...</option>
                     <option value="recipe">Chia sẻ công thức</option>
-                    <option value="question">Câu hỏi về nấu ăn</option>
+                    <option value="question">Câu hỏi nấu ăn</option>
                     <option value="feedback">Góp ý website</option>
                     <option value="other">Khác</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-foreground mb-1.5">
-                    Nội Dung <span className="text-destructive">*</span>
-                  </label>
+                  <label className="field-label">Nội Dung <span style={{ color: "var(--color-red)" }}>*</span></label>
                   <textarea
+                    className={`field-input${errors.message ? " error" : ""}`}
                     name="message"
+                    rows={6}
                     value={form.message}
                     onChange={handleChange}
-                    rows={6}
-                    placeholder="Nhập nội dung tin nhắn của bạn..."
-                    className={`w-full px-4 py-2.5 border rounded-xl bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm resize-none transition-colors ${
-                      errors.message ? "border-destructive" : "border-border"
-                    }`}
+                    placeholder="Nhập nội dung tin nhắn..."
+                    style={{ resize: "vertical" }}
                   />
-                  {errors.message && (
-                    <p className="mt-1 text-xs text-destructive">{errors.message}</p>
-                  )}
+                  {errors.message && <p className="field-error">{errors.message}</p>}
                 </div>
 
-                <button
-                  type="submit"
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-sm"
-                >
-                  <Send className="w-4 h-4" />
-                  Gửi Tin Nhắn
-                </button>
+                <div>
+                  <button type="submit" className="btn-primary">
+                    <Send size={13} /> Gửi Tin Nhắn
+                  </button>
+                </div>
               </form>
             )}
           </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .contact-grid { grid-template-columns: 1fr !important; }
+          .form-two-col { grid-template-columns: 1fr !important; }
+        }
+      `}</style>
     </div>
   );
 }

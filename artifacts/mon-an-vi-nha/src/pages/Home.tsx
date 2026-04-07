@@ -1,223 +1,266 @@
 import { Link } from "wouter";
-import { ArrowRight, Star, Clock, Users } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import DishCard from "@/components/DishCard";
 import { dishes } from "@/data/dishes";
 
-const featuredDishes = dishes.slice(0, 3);
-
-const stats = [
-  { label: "Công Thức", value: "50+" },
-  { label: "Danh Mục", value: "5" },
-  { label: "Người Nấu", value: "1K+" },
-  { label: "Đánh Giá", value: "4.9★" },
-];
+const featured = dishes[0];
+const sideList = dishes.slice(1, 5);
+const randomThree = [...dishes].sort(() => Math.random() - 0.5).slice(0, 3);
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
-      {/* Hero Section */}
-      <section className="relative min-h-screen flex items-center overflow-hidden">
-        {/* Background */}
+    <div className="paper-texture">
+      {/* ── FRONT PAGE LAYOUT ── */}
+      <div className="page-container" style={{ paddingTop: "2rem" }}>
+
+        {/* Section label */}
+        <p className="section-label">Số Mới Nhất</p>
+
+        {/* Two-column newspaper layout */}
         <div
-          className="absolute inset-0 z-0"
           style={{
-            backgroundImage:
-              "url('https://images.unsplash.com/photo-1555126634-323283e090fa?w=1600&q=80')",
-            backgroundSize: "cover",
-            backgroundPosition: "center",
+            display: "grid",
+            gridTemplateColumns: "60% 40%",
+            gap: 0,
+            borderTop: "3px solid var(--color-ink)",
+            borderBottom: "1px solid var(--color-rule)",
           }}
         >
-          <div className="absolute inset-0 bg-black/55 dark:bg-black/70" />
-        </div>
-
-        {/* Content */}
-        <div className="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-16">
-          <div className="max-w-2xl">
-            <span className="inline-block bg-primary/20 border border-primary/40 text-primary-foreground backdrop-blur-sm text-sm font-medium px-4 py-1.5 rounded-full mb-6">
-              🍚 Ẩm Thực Gia Đình Việt Nam
-            </span>
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-              Hương Vị{" "}
-              <span className="text-amber-400">Bếp Nhà</span>{" "}
-              Ngày Xưa
-            </h1>
-            <p className="text-lg text-white/80 leading-relaxed mb-8 max-w-lg">
-              Khám phá những công thức nấu ăn truyền thống của ẩm thực Việt Nam.
-              Từ bữa cơm bình dị đến những món đặc trưng ngày lễ — tất cả đều
-              mang đậm hương vị bếp nhà yêu thương.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Link
-                href="/menu"
-                className="inline-flex items-center gap-2 bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-xl font-semibold transition-all hover:scale-105 shadow-lg"
-              >
-                Khám Phá Thực Đơn
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-              <Link
-                href="/about"
-                className="inline-flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white backdrop-blur-sm border border-white/30 px-6 py-3 rounded-xl font-semibold transition-all"
-              >
-                Tìm Hiểu Thêm
-              </Link>
-            </div>
-          </div>
-
-          {/* Stats */}
-          <div className="mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-lg sm:max-w-full">
-            {stats.map((stat) => (
-              <div
-                key={stat.label}
-                className="bg-white/10 backdrop-blur-sm border border-white/20 rounded-xl p-4 text-center"
-              >
-                <div className="text-2xl font-bold text-white">{stat.value}</div>
-                <div className="text-white/70 text-sm mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Scroll indicator */}
-        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2 animate-bounce">
-          <div className="w-px h-10 bg-white/40" />
-          <span className="text-white/50 text-xs">Cuộn xuống</span>
-        </div>
-      </section>
-
-      {/* About Banner */}
-      <section className="bg-primary/5 border-y border-border py-12">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row items-center gap-8">
-            <div className="flex-1">
-              <h2 className="text-2xl font-bold text-foreground mb-3">
-                Tại Sao Chọn Vị Nhà?
-              </h2>
-              <p className="text-muted-foreground leading-relaxed">
-                Mỗi công thức đều được chọn lọc kỹ lưỡng, trình bày rõ ràng từng bước,
-                với nguyên liệu dễ tìm để bạn có thể nấu ngay tại nhà.
-              </p>
-            </div>
-            <div className="flex flex-wrap gap-4 md:justify-end">
-              {[
-                { icon: <Star className="w-5 h-5" />, text: "Công thức chuẩn vị" },
-                { icon: <Clock className="w-5 h-5" />, text: "Hướng dẫn từng bước" },
-                { icon: <Users className="w-5 h-5" />, text: "Dành cho mọi gia đình" },
-              ].map((item) => (
-                <div
-                  key={item.text}
-                  className="flex items-center gap-2 bg-background border border-border rounded-xl px-4 py-3 text-sm font-medium text-foreground"
-                >
-                  <span className="text-primary">{item.icon}</span>
-                  {item.text}
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Featured Dishes */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-end justify-between mb-10">
-            <div>
-              <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-1">
-                Nổi Bật Tuần Này
-              </p>
-              <h2 className="text-3xl font-bold text-foreground">Món Ăn Được Yêu Thích</h2>
-            </div>
-            <Link
-              href="/menu"
-              className="hidden sm:flex items-center gap-1.5 text-primary hover:text-primary/80 font-medium text-sm transition-colors"
-            >
-              Xem tất cả
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {featuredDishes.map((dish) => (
-              <DishCard key={dish.id} dish={dish} />
-            ))}
-          </div>
-
-          <div className="mt-8 text-center sm:hidden">
-            <Link
-              href="/menu"
-              className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium"
-            >
-              Xem tất cả món ăn
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* Categories Section */}
-      <section className="py-16 bg-muted/30">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <p className="text-primary text-sm font-semibold uppercase tracking-wider mb-1">
-              Dễ Tìm Món Ngon
-            </p>
-            <h2 className="text-3xl font-bold text-foreground">Danh Mục Món Ăn</h2>
-          </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
-            {[
-              { name: "Canh & Súp", emoji: "🍲", count: dishes.filter((d) => d.category === "Canh & Súp").length },
-              { name: "Kho & Rim", emoji: "🥘", count: dishes.filter((d) => d.category === "Kho & Rim").length },
-              { name: "Xào & Chiên", emoji: "🍳", count: dishes.filter((d) => d.category === "Xào & Chiên").length },
-              { name: "Luộc & Hấp", emoji: "🫕", count: dishes.filter((d) => d.category === "Luộc & Hấp").length },
-              { name: "Cơm & Cháo", emoji: "🍚", count: dishes.filter((d) => d.category === "Cơm & Cháo").length },
-            ].map((cat) => (
-              <Link
-                key={cat.name}
-                href={`/menu?category=${encodeURIComponent(cat.name)}`}
-                className="bg-card border border-border rounded-2xl p-4 text-center hover:border-primary hover:bg-primary/5 hover:-translate-y-1 transition-all duration-200 group cursor-pointer"
-              >
-                <div className="text-3xl mb-2">{cat.emoji}</div>
-                <div className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors">
-                  {cat.name}
-                </div>
-                <div className="text-xs text-muted-foreground mt-1">{cat.count} món</div>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-16">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div
-            className="rounded-3xl overflow-hidden relative p-8 sm:p-12 text-center"
+          {/* LEFT — Featured article */}
+          <article
             style={{
-              backgroundImage:
-                "url('https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80')",
-              backgroundSize: "cover",
-              backgroundPosition: "center",
+              borderRight: "2px solid var(--color-gold-light)",
+              paddingRight: "1.75rem",
+              paddingTop: "1.25rem",
+              paddingBottom: "1.5rem",
             }}
           >
-            <div className="absolute inset-0 bg-black/60 dark:bg-black/75" />
-            <div className="relative z-10">
-              <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-                Bắt Đầu Nấu Ăn Ngay Hôm Nay
-              </h2>
-              <p className="text-white/80 text-lg mb-8 max-w-lg mx-auto">
-                Hàng chục công thức dễ làm đang chờ bạn khám phá. Bữa cơm ấm áp
-                chỉ cách vài bước chân vào bếp.
-              </p>
-              <Link
-                href="/menu"
-                className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-white px-8 py-4 rounded-xl font-bold text-lg transition-all hover:scale-105 shadow-lg shadow-amber-500/30"
+            <Link href={`/dish/${featured.slug}`}>
+              <div style={{ overflow: "hidden", marginBottom: "1rem" }}>
+                <img
+                  src={featured.image}
+                  alt={featured.name}
+                  className="sepia-image"
+                  style={{
+                    width: "100%",
+                    aspectRatio: "16/9",
+                    objectFit: "cover",
+                    display: "block",
+                    cursor: "pointer",
+                  }}
+                />
+              </div>
+              <span className="category-badge" style={{ marginBottom: "0.5rem", display: "inline-block" }}>
+                Tiêu Điểm
+              </span>
+              <h2
+                style={{
+                  fontFamily: "var(--font-display)",
+                  fontSize: "clamp(1.5rem, 3vw, 2.1rem)",
+                  fontWeight: 900,
+                  color: "var(--color-ink)",
+                  lineHeight: 1.15,
+                  margin: "0.4rem 0 0.75rem",
+                  cursor: "pointer",
+                }}
               >
-                Vào Bếp Ngay
-                <ArrowRight className="w-5 h-5" />
+                {featured.name}
+              </h2>
+            </Link>
+            <p
+              style={{
+                fontFamily: "var(--font-body)",
+                fontSize: "0.95rem",
+                color: "var(--color-ink-light)",
+                lineHeight: 1.8,
+                marginBottom: "1rem",
+              }}
+            >
+              {featured.description}
+            </p>
+            <div
+              style={{
+                display: "flex",
+                gap: "1.5rem",
+                fontFamily: "var(--font-caption)",
+                fontSize: "0.72rem",
+                color: "var(--color-muted)",
+                borderTop: "1px solid var(--color-rule)",
+                paddingTop: "0.65rem",
+                marginTop: "0.5rem",
+              }}
+            >
+              <span>📍 {featured.region}</span>
+              <span>⏱ {featured.prepTime} sơ chế · {featured.cookTime} nấu</span>
+              <span>👥 {featured.servings} người</span>
+            </div>
+            <div style={{ marginTop: "1rem" }}>
+              <Link href={`/dish/${featured.slug}`} className="btn-primary">
+                Xem Công Thức <ArrowRight size={13} />
               </Link>
             </div>
-          </div>
+          </article>
+
+          {/* RIGHT — Text-only list */}
+          <aside style={{ paddingLeft: "1.75rem", paddingTop: "1.25rem" }}>
+            <p
+              style={{
+                fontFamily: "var(--font-caption)",
+                fontSize: "0.68rem",
+                fontWeight: 700,
+                letterSpacing: "0.18em",
+                textTransform: "uppercase",
+                color: "var(--color-muted)",
+                borderBottom: "1px solid var(--color-rule)",
+                paddingBottom: "0.4rem",
+                marginBottom: "0.5rem",
+              }}
+            >
+              Các Món Khác
+            </p>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 0 }}>
+              {sideList.map((dish, i) => (
+                <li
+                  key={dish.id}
+                  style={{
+                    borderBottom: i < sideList.length - 1 ? "1px solid var(--color-paper-dark)" : "none",
+                    paddingBottom: "0.75rem",
+                    marginBottom: "0.75rem",
+                  }}
+                >
+                  <Link href={`/dish/${dish.slug}`}>
+                    <span className="category-badge" style={{ marginBottom: "0.3rem", display: "inline-block" }}>
+                      {dish.region}
+                    </span>
+                    <h4
+                      style={{
+                        fontFamily: "var(--font-display)",
+                        fontSize: "1rem",
+                        fontWeight: 700,
+                        color: "var(--color-ink)",
+                        cursor: "pointer",
+                        lineHeight: 1.25,
+                        marginBottom: "0.3rem",
+                        transition: "color 0.2s",
+                      }}
+                      onMouseEnter={(e) => ((e.target as HTMLElement).style.color = "var(--color-red)")}
+                      onMouseLeave={(e) => ((e.target as HTMLElement).style.color = "var(--color-ink)")}
+                    >
+                      {dish.name}
+                    </h4>
+                    <p
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "0.78rem",
+                        color: "var(--color-muted)",
+                        lineHeight: 1.6,
+                        display: "-webkit-box",
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}
+                    >
+                      {dish.description}
+                    </p>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+            <Link
+              href="/menu"
+              className="btn-outline"
+              style={{ marginTop: "0.5rem", display: "inline-flex", fontSize: "0.72rem" }}
+            >
+              Xem Toàn Bộ Thực Đơn →
+            </Link>
+          </aside>
         </div>
-      </section>
+
+        {/* ── ORNAMENT ── */}
+        <div className="ornament-divider">❦ Hôm Nay Nấu Gì? ❦</div>
+
+        {/* ── RANDOM 3 CARDS ── */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))",
+            gap: "1.25rem",
+            marginBottom: "3rem",
+          }}
+        >
+          {randomThree.map((dish) => (
+            <DishCard key={dish.id} dish={dish} />
+          ))}
+        </div>
+
+        {/* ── ORNAMENT ── */}
+        <div className="ornament-divider">◆ ◆ ◆</div>
+
+        {/* ── CTA BANNER ── */}
+        <div
+          style={{
+            background: "var(--color-ink)",
+            color: "var(--color-paper)",
+            border: "1px solid var(--color-gold-light)",
+            padding: "2.5rem",
+            textAlign: "center",
+            marginBottom: "3rem",
+          }}
+        >
+          <p
+            style={{
+              fontFamily: "var(--font-caption)",
+              fontSize: "0.7rem",
+              letterSpacing: "0.2em",
+              textTransform: "uppercase",
+              color: "var(--color-gold-light)",
+              marginBottom: "0.5rem",
+            }}
+          >
+            — Ấm Bụng Mỗi Ngày —
+          </p>
+          <h2
+            style={{
+              fontFamily: "var(--font-display)",
+              fontSize: "clamp(1.4rem, 3vw, 2rem)",
+              color: "var(--color-paper)",
+              marginBottom: "0.75rem",
+            }}
+          >
+            Bắt Đầu Từ Bếp Nhà
+          </h2>
+          <p
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "0.9rem",
+              color: "var(--color-paper-dark)",
+              marginBottom: "1.25rem",
+              maxWidth: "480px",
+              margin: "0 auto 1.25rem",
+            }}
+          >
+            Hàng chục công thức nấu ăn truyền thống, hướng dẫn từng bước rõ ràng, nguyên liệu dễ tìm.
+          </p>
+          <Link href="/menu" className="btn-primary">
+            Khám Phá Thực Đơn <ArrowRight size={13} />
+          </Link>
+        </div>
+      </div>
+
+      {/* Responsive styles for the two-column grid */}
+      <style>{`
+        @media (max-width: 768px) {
+          .home-two-col {
+            grid-template-columns: 1fr !important;
+          }
+          .home-two-col > aside {
+            border-right: none !important;
+            border-top: 2px solid var(--color-gold-light) !important;
+            padding-left: 0 !important;
+            padding-top: 1.25rem !important;
+          }
+        }
+      `}</style>
     </div>
   );
 }

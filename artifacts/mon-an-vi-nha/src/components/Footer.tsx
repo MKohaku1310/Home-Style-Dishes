@@ -1,65 +1,34 @@
 import { Link } from "wouter";
-import { ChefHat, Heart, Facebook, Instagram, Youtube } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-card border-t border-border mt-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <footer className="site-footer paper-texture">
+      <div className="page-container">
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "2rem" }}>
           {/* Brand */}
           <div>
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-9 h-9 rounded-full bg-primary flex items-center justify-center">
-                <ChefHat className="w-5 h-5 text-primary-foreground" />
-              </div>
-              <span className="text-xl font-bold text-foreground">Vị Nhà</span>
-            </div>
-            <p className="text-muted-foreground text-sm leading-relaxed">
-              Mang hương vị bếp nhà đến với mọi gia đình. Nơi lưu giữ những
-              công thức nấu ăn truyền thống của ẩm thực Việt Nam.
+            <h3 style={{ fontFamily: "var(--font-display)", fontSize: "1.4rem", color: "var(--color-gold-light)", marginBottom: "0.75rem" }}>
+              Món Ăn Vị Nhà
+            </h3>
+            <p style={{ color: "var(--color-paper-dark)", fontSize: "0.82rem", lineHeight: 1.8 }}>
+              Lưu giữ và chia sẻ những công thức nấu ăn truyền thống của ẩm thực gia đình Việt Nam. Bếp nhà — nơi tình thương bắt đầu.
             </p>
-            <div className="flex items-center gap-3 mt-4">
-              <a
-                href="#"
-                className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" />
-              </a>
-              <a
-                href="#"
-                className="w-9 h-9 rounded-full bg-muted flex items-center justify-center text-muted-foreground hover:bg-primary hover:text-primary-foreground transition-all"
-                aria-label="Youtube"
-              >
-                <Youtube className="w-4 h-4" />
-              </a>
-            </div>
           </div>
 
           {/* Links */}
           <div>
-            <h3 className="text-foreground font-semibold mb-4">Khám Phá</h3>
-            <ul className="space-y-2">
+            <h3 style={{ marginBottom: "0.75rem", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              Khám Phá
+            </h3>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
               {[
                 { href: "/", label: "Trang Chủ" },
                 { href: "/menu", label: "Thực Đơn" },
                 { href: "/about", label: "Giới Thiệu" },
                 { href: "/contact", label: "Liên Hệ" },
-              ].map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-muted-foreground hover:text-primary text-sm transition-colors"
-                  >
-                    {link.label}
-                  </Link>
+              ].map((l) => (
+                <li key={l.href}>
+                  <Link href={l.href}>{l.label}</Link>
                 </li>
               ))}
             </ul>
@@ -67,31 +36,27 @@ export default function Footer() {
 
           {/* Categories */}
           <div>
-            <h3 className="text-foreground font-semibold mb-4">Danh Mục</h3>
-            <ul className="space-y-2">
-              {["Canh & Súp", "Kho & Rim", "Xào & Chiên", "Luộc & Hấp", "Cơm & Cháo"].map(
-                (cat) => (
-                  <li key={cat}>
-                    <Link
-                      href={`/menu?category=${encodeURIComponent(cat)}`}
-                      className="text-muted-foreground hover:text-primary text-sm transition-colors"
-                    >
-                      {cat}
-                    </Link>
-                  </li>
-                )
-              )}
+            <h3 style={{ marginBottom: "0.75rem", fontSize: "0.75rem", letterSpacing: "0.12em", textTransform: "uppercase" }}>
+              Danh Mục
+            </h3>
+            <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              {["Canh & Súp", "Kho & Rim", "Xào & Chiên", "Cơm", "Bún & Phở"].map((c) => (
+                <li key={c}>
+                  <span style={{ color: "var(--color-paper-dark)", fontSize: "0.82rem" }}>{c}</span>
+                </li>
+              ))}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-border mt-8 pt-8 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-muted-foreground text-sm">
-            © 2025 Vị Nhà. Tất cả quyền được bảo lưu.
+        <hr className="footer-divider" />
+
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+          <p style={{ fontSize: "0.75rem", color: "rgba(236,219,184,0.5)" }}>
+            © 2025 Món Ăn Vị Nhà · Mọi quyền được bảo lưu
           </p>
-          <p className="text-muted-foreground text-sm flex items-center gap-1">
-            Làm bằng <Heart className="w-3.5 h-3.5 text-red-500 fill-red-500" /> cho bữa cơm
-            nhà
+          <p style={{ fontSize: "0.75rem", color: "rgba(236,219,184,0.5)", fontStyle: "italic" }}>
+            Làm bằng tình yêu với bếp nhà Việt Nam ❦
           </p>
         </div>
       </div>
