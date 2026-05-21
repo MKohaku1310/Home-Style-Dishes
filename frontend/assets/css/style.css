@@ -1,0 +1,424 @@
+:root {
+    /* PTIT Branding Colors - Updated for more vibrancy */
+    --ptit-red: #da251c; /* Vibrant PTIT Red */
+    --ptit-dark: #a51c15; 
+    --ptit-light: #fff1f0;
+    --ptit-accent: #ffc107;
+    
+    /* UI Neutrals */
+    --white: #ffffff;
+    --light-bg: #f8f9fa;
+    --text-main: #1a1a1a;
+    --text-muted: #4b5563; /* Darker gray for better contrast */
+    --border-color: #e5e7eb;
+    
+    /* Layout & Shadows */
+    --sidebar-width: 260px;
+    --sidebar-collapsed-width: 80px;
+    --navbar-height: 70px;
+    --shadow-card: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --shadow-header: 0 2px 10px rgba(139, 0, 0, 0.1);
+    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --radius-lg: 12px;
+    --radius-md: 8px;
+
+    /* Avatar Gradient */
+    --avatar-grad: linear-gradient(135deg, var(--ptit-red) 0%, #ff5252 100%);
+}
+
+/* 1. Reset & Base Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background-color: var(--light-bg);
+    color: var(--text-main);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    color: var(--ptit-dark);
+}
+
+a {
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+/* 2. Layout Structure */
+.wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+#sidebar {
+    width: var(--sidebar-width);
+    background: var(--white);
+    border-right: 1px solid var(--border-color);
+    position: fixed;
+    height: 100vh;
+    transition: var(--transition);
+    z-index: 1050;
+    overflow-y: auto;
+}
+
+#sidebar.collapsed {
+    width: var(--sidebar-collapsed-width);
+}
+
+#sidebar.collapsed .sidebar-menu li a span {
+    display: none;
+}
+
+#sidebar.collapsed .sidebar-menu li a i {
+    margin-right: 0;
+    font-size: 1.4rem;
+}
+
+#sidebar.collapsed .sidebar-menu li a {
+    padding: 1rem;
+    justify-content: center;
+}
+
+#sidebar.collapsed .sidebar-header div,
+#sidebar.collapsed .sidebar-section-header {
+    display: none;
+}
+
+#sidebar.collapsed .navbar-logo {
+    height: 35px;
+    margin-bottom: 0 !important;
+}
+
+.main-content {
+    flex: 1;
+    margin-left: var(--sidebar-width);
+    padding: 1.5rem;
+    transition: var(--transition);
+    min-width: 0;
+}
+
+.main-content.expanded {
+    margin-left: var(--sidebar-collapsed-width);
+}
+
+@media (max-width: 992px) {
+    #sidebar {
+        margin-left: calc(-1 * var(--sidebar-width));
+    }
+    #sidebar.active {
+        margin-left: 0;
+    }
+    .main-content {
+        margin-left: 0 !important;
+    }
+}
+
+/* 3. Navbar Styling */
+.top-navbar {
+    height: var(--navbar-height);
+    background: var(--white);
+    border-bottom: 2px solid var(--ptit-red);
+    box-shadow: var(--shadow-header);
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-logo {
+    height: 45px;
+}
+
+.notif-bell {
+    position: relative;
+    font-size: 1.25rem;
+    color: var(--text-muted);
+    cursor: pointer;
+}
+
+.notif-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: var(--ptit-red);
+    color: var(--white);
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--white);
+}
+
+/* 4. Sidebar Menu */
+.sidebar-header {
+    padding: 1.5rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-menu {
+    list-style: none;
+    padding: 1rem 0;
+}
+
+.sidebar-menu li a {
+    display: flex;
+    align-items: center;
+    padding: 0.85rem 1.5rem;
+    color: var(--text-muted);
+    border-left: 4px solid transparent;
+}
+
+.sidebar-menu li a i {
+    width: 25px;
+    font-size: 1.2rem;
+    margin-right: 1rem;
+}
+
+.sidebar-menu li.active a {
+    background: #fff5f5;
+    color: var(--ptit-red);
+    border-left: 5px solid var(--ptit-red);
+    font-weight: 700;
+}
+.nav-pills .nav-link.active {
+    background-color: var(--ptit-red) !important;
+    color: white !important;
+}
+.bg-primary-soft { background-color: #eef2ff !important; color: #4338ca !important; }
+.bg-success-soft { background-color: #f0fdf4 !important; color: #15803d !important; }
+.bg-warning-soft { background-color: #fffbeb !important; color: #b45309 !important; }
+.bg-danger-soft { background-color: #fef2f2 !important; color: #b91c1c !important; }
+.bg-ptit-red-soft { background-color: #fff1f1 !important; color: #8B0000 !important; }
+
+.sidebar-menu li a:hover {
+    background: #fdf2f2;
+    color: var(--ptit-red);
+}
+
+/* 5. Components: Cards */
+.ptit-card {
+    background: var(--white);
+    border: none;
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    transition: var(--transition);
+    overflow: hidden;
+}
+
+.ptit-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(139, 0, 0, 0.12);
+}
+
+.card-icon-box {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--ptit-light);
+    color: var(--ptit-red);
+    font-size: 1.5rem;
+}
+
+.user-avatar-circle {
+    width: 40px;
+    height: 40px;
+    background: var(--avatar-grad);
+    color: var(--white);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 3px 8px rgba(139, 0, 0, 0.3);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    transition: var(--transition);
+}
+
+.user-avatar-circle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 5px 15px rgba(139, 0, 0, 0.4);
+}
+
+/* 6. Buttons */
+.btn-ptit {
+    background-color: var(--ptit-red);
+    color: var(--white);
+    border: none;
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.btn-ptit:hover {
+    background-color: var(--ptit-dark);
+    color: var(--white);
+    box-shadow: 0 4px 15px rgba(139, 0, 0, 0.3);
+}
+
+.btn-ptit-outline {
+    border: 2px solid var(--ptit-red);
+    color: var(--ptit-red);
+    background: transparent;
+    padding: 0.6rem 1.5rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+}
+
+.btn-ptit-outline:hover {
+    background: var(--ptit-red);
+    color: var(--white);
+}
+
+/* 7. Status Badges */
+.badge-pending { background-color: #fef3c7; color: #92400e; border: 1px solid #fde68a; }
+.badge-approved { background-color: #dcfce7; color: #166534; border: 1px solid #bbf7d0; }
+.badge-rejected { background-color: #fee2e2; color: #991b1b; border: 1px solid #fecaca; }
+.badge-cancelled { background-color: #f3f4f6; color: #374151; border: 1px solid #e5e7eb; }
+.badge-status {
+    padding: 0.6em 1.2em;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* 8. Table Styling */
+.table-ptit {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--white);
+}
+
+.table-ptit thead th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    border-bottom: 2px solid var(--ptit-red);
+    padding: 1.25rem 1rem;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.table-ptit tbody tr:hover {
+    background-color: #fff9f9;
+}
+
+/* 9. Forms: Floating Labels Style */
+.form-floating > .form-control:focus {
+    border-color: var(--ptit-red);
+    box-shadow: 0 0 0 0.25rem rgba(139, 0, 0, 0.25);
+}
+
+.form-floating > label::after {
+    background-color: transparent !important;
+}
+
+/* 10. Toasts & Animations */
+.toast-container-ptit {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 2000;
+}
+
+.toast-ptit {
+    background: var(--white);
+    border-radius: var(--radius-md);
+    border-left: 5px solid var(--ptit-red);
+    padding: 1rem 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    min-width: 300px;
+    animation: toastSlideIn 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+
+@keyframes toastSlideIn {
+    from { transform: translateX(110%); }
+    to { transform: translateX(0); }
+}
+
+/* 11. Loading Spinner Overlay */
+#loading-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 3000;
+}
+
+.ptit-spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid var(--ptit-light);
+    border-top: 5px solid var(--ptit-red);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* 12. Empty State */
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: var(--text-muted);
+}
+
+.empty-state i {
+    font-size: 4rem;
+    color: var(--ptit-light);
+    margin-bottom: 1rem;
+}
+
+/* 13. Custom Pagination */
+.pagination .page-link {
+    color: var(--ptit-red);
+    border-color: var(--border-color);
+    padding: 0.5rem 1rem;
+    font-weight: 600;
+}
+
+.pagination .page-link:hover {
+    background-color: var(--ptit-light);
+    border-color: var(--ptit-red);
+    color: var(--ptit-dark);
+}
+
+.pagination .page-item.active .page-link {
+    background-color: var(--ptit-red);
+    border-color: var(--ptit-red);
+    color: var(--white);
+}
+
+.pagination .page-item.disabled .page-link {
+    color: #9ca3af;
+    background-color: #f9fafb;
+}
+
