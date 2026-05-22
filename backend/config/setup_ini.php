@@ -28,9 +28,18 @@ $localIni = dirname(dirname(__DIR__)) . DIRECTORY_SEPARATOR . 'php_run.ini';
 if ($iniSource) {
     $content = file_get_contents($iniSource);
     
-    // Enable SQLite3 and PDO SQLite extensions
-    $content = preg_replace('/;?\s*extension\s*=\s*pdo_sqlite/i', 'extension=pdo_sqlite', $content);
-    $content = preg_replace('/;?\s*extension\s*=\s*sqlite3/i', 'extension=sqlite3', $content);
+    // Enable SQLite3 and PDO SQLite extensions (handling different formats like php_pdo_sqlite.dll or appending if not found)
+    if (preg_match('/extension\s*=\s*(php_)?pdo_sqlite(\.dll)?/i', $content)) {
+        $content = preg_replace('/;?\s*extension\s*=\s*(php_)?pdo_sqlite(\.dll)?/i', 'extension=pdo_sqlite', $content);
+    } else {
+        $content .= "\r\nextension=pdo_sqlite\r\n";
+    }
+
+    if (preg_match('/extension\s*=\s*(php_)?sqlite3(\.dll)?/i', $content)) {
+        $content = preg_replace('/;?\s*extension\s*=\s*(php_)?sqlite3(\.dll)?/i', 'extension=sqlite3', $content);
+    } else {
+        $content .= "\r\nextension=sqlite3\r\n";
+    }
     
     // Set the absolute ext directory path
     $extDir = $phpDir . DIRECTORY_SEPARATOR . 'ext';
