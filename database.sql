@@ -1,5 +1,5 @@
--- SQL Dump for MySQL / phpMyAdmin
--- Generated on: 2026-05-22 02:45:37
+CREATE DATABASE IF NOT EXISTS `ql_phong_hoc` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE `ql_phong_hoc`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
