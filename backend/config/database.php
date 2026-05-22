@@ -3,8 +3,7 @@
  * Cấu hình kết nối cơ sở dữ liệu (SQLite & MySQL)
  */
 
-// Lựa chọn Driver: 'sqlite' hoặc 'mysql'
-define('DB_DRIVER', 'sqlite'); // Thay đổi thành 'mysql' nếu muốn sử dụng MySQL/phpMyAdmin
+define('DB_DRIVER', 'mysql'); // Changed to 'mysql' to use MySQL/phpMyAdmin on XAMPP
 
 // --- Cấu hình cho SQLite ---
 define('DB_FILE', __DIR__ . '/../database.sqlite');
