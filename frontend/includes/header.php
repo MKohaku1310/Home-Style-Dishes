@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PTIT Room Booking - Hệ thống Quản lý Phòng học A3</title>
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Google Fonts: Be Vietnam Pro & Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome -->
@@ -34,8 +34,8 @@
             $isAdmin = ($_SESSION['role_name'] ?? '') === 'admin';
         ?>
         <!-- Sidebar -->
-        <nav id="sidebar" style="border-right: 2px solid var(--ptit-red);">
-            <div class="sidebar-header" style="background: var(--ptit-red); border-bottom: none; padding: 1.5rem 1rem;">
+        <nav id="sidebar">
+            <div class="sidebar-header">
                 <a href="index.php?page=trang_chu" class="text-decoration-none d-block">
                     <img src="https://info.nhonam.io.vn/images/Logo-PTIT@2x.png" alt="PTIT Logo" class="navbar-logo mb-2" style="height: 65px; max-width: 100%; object-fit: contain;">
                     <div class="fw-bold text-white mb-0" style="font-size: 0.75rem; letter-spacing: 0.5px; line-height: 1.2;">Hệ thống Quản lý<br>Phòng thực hành A3</div>
@@ -183,8 +183,11 @@
                     $.post('backend/api/thong_bao.php?action=mark_read', {}, function(res) {
                         if (res.status === 'success') {
                             showToast('Đã đánh dấu tất cả là đã đọc');
-                            fetchNotifications();
+                            // BUG FIX: Gọi loadNotifList() trực tiếp trước fetchNotifications()
+                            // vì fetchNotifications() chỉ gọi loadNotifList() khi count > 0,
+                            // nhưng sau khi mark all read thì count = 0 → list sẽ không được cập nhật
                             loadNotifList();
+                            fetchNotifications();
                             // Nếu đang ở trang danh sách thông báo đầy đủ thì reload lại trang đó
                             if (typeof loadFullNotifList === 'function') {
                                 loadFullNotifList();
@@ -206,12 +209,13 @@
                             const $badge = $('#unread-count');
                             if (count > 0) {
                                 $badge.text(count).show();
-                                // Nếu người dùng đang mở menu thông báo thì load lại danh sách luôn
-                                if ($('#notifDropdown').attr('aria-expanded') === 'true') {
-                                    loadNotifList();
-                                }
                             } else {
                                 $badge.hide();
+                            }
+                            // BUG FIX: Luôn reload danh sách nếu dropdown đang mở,
+                            // kể cả khi count = 0 (để hiển thị trạng thái "đã đọc hết" đúng)
+                            if ($('#notifDropdown').attr('aria-expanded') === 'true') {
+                                loadNotifList();
                             }
                         }
                     });

@@ -40,13 +40,36 @@ Nếu bạn muốn chuẩn bị trước ở nhà để cắm USB vào máy trư
 
 ---
 
-## 💾 Cơ sở dữ liệu (SQLite)
+## 💾 Cơ sở dữ liệu
 
-Hệ thống sử dụng cơ sở dữ liệu **SQLite**, mọi dữ liệu (bảng, dữ liệu mẫu, cấu trúc) được lưu trữ trong một tệp duy nhất tại:
-`[thư mục dự án]/backend/database.sqlite`
+Mặc định, hệ thống sử dụng cơ sở dữ liệu **SQLite** giúp chạy ngay lập tức mà không cần cấu hình. Tuy nhiên, nếu bạn muốn sử dụng **MySQL (phpMyAdmin)**, bạn có thể thực hiện theo hướng dẫn dưới đây.
 
-> [!IMPORTANT]
-> **Không cần cài đặt hay Import CSDL**: Bạn **KHÔNG** cần cài đặt MySQL, SQL Server hay chạy bất kỳ câu lệnh Import SQL nào. Database mẫu đã được tạo sẵn bên trong file `database.sqlite` (bao gồm sẵn danh sách phòng học, tài khoản quản trị, ca học,...). Bạn chỉ cần khởi chạy hệ thống là kết nối được ngay lập tức.
+---
+
+### 🌐 Hướng dẫn sử dụng MySQL / phpMyAdmin
+
+#### Bước 1: Import cơ sở dữ liệu trên phpMyAdmin
+1. Khởi động **XAMPP** hoặc **Laragon** và mở **phpMyAdmin** (thường ở địa chỉ `http://localhost/phpmyadmin`).
+2. Tạo một cơ sở dữ liệu mới có tên: **`ql_phong_hoc`** (chọn bảng mã `utf8mb4_unicode_ci`).
+3. Chọn cơ sở dữ liệu `ql_phong_hoc` vừa tạo.
+4. Chọn tab **Import** (Nhập) ở thanh menu phía trên.
+5. Nhấp chọn **Choose File** (Chọn tệp) và trỏ đến file **`database.sql`** nằm ngay thư mục gốc của dự án này.
+6. Kéo xuống dưới cùng và nhấn **Import** (Nhập) hoặc **Go** (Thực hiện).
+
+#### Bước 2: Cấu hình kết nối MySQL trong mã nguồn
+1. Mở tệp [database.php](file:///d:/Projects/VNOJ/Home-Style-Dishes/backend/config/database.php) nằm tại thư mục `backend/config/database.php`.
+2. Thay đổi giá trị cấu hình driver từ `sqlite` thành `mysql`:
+   ```php
+   define('DB_DRIVER', 'mysql');
+   ```
+3. Cập nhật lại thông tin kết nối MySQL nếu cần thiết:
+   ```php
+   define('DB_HOST', 'localhost');
+   define('DB_PORT', '3306');
+   define('DB_NAME', 'ql_phong_hoc');
+   define('DB_USER', 'root');
+   define('DB_PASS', ''); // Mật khẩu MySQL của bạn (mặc định XAMPP/Laragon là để trống)
+   ```
 
 ---
 
